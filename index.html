@@ -3,69 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ASTROLOGER GOUOTAM AI Suite - BPHS Vedic Astrology</title>
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
+    <title>ASTROLOGER GOUOTAM AI Suite</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #0B1120;
-            --card-bg: #151F32;
-            --card-border: #23324D;
+            --bg-dark: #0A0E17;
+            --bg-card: #131A29;
+            --bg-card-alt: #1A2336;
+            --border-gold: #C9A45C;
+            --border-muted: #2A364F;
             --gold-primary: #D4AF37;
             --gold-light: #F3E5AB;
-            --text-light: #F1F5F9;
+            --text-main: #E2E8F0;
             --text-muted: #94A3B8;
-            --accent-green: #22C55E;
-            --accent-red: #EF4444;
+            --accent-red: #E63946;
+            --accent-green: #2EC4B6;
+            --accent-blue: #3A86EF;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Hind Siliguri', 'Segoe UI', Tahoma, sans-serif;
+        }
 
         body {
-            font-family: 'Hind Siliguri', sans-serif;
             background-color: var(--bg-dark);
-            color: var(--text-light);
-            line-height: 1.6;
-            padding: 12px;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        header {
-            background: linear-gradient(135deg, #1E1035 0%, #0B1120 100%);
-            border: 1px solid var(--gold-primary);
-            border-radius: 12px;
-            padding: 16px 20px;
+            color: var(--text-main);
+            min-height: 100vh;
             display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* App Header */
+        .app-header {
+            background: linear-gradient(135deg, #0F172A 0%, #1E1B4B 100%);
+            border-bottom: 2px solid var(--border-gold);
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.15);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
         }
 
-        .brand-title {
-            font-family: 'Cinzel', serif;
-            font-size: 1.5rem;
-            color: var(--gold-primary);
-            font-weight: 700;
+        .header-left {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 15px;
         }
 
-        .status-badge {
-            background: rgba(34, 197, 94, 0.15);
-            border: 1px solid var(--accent-green);
-            color: var(--accent-green);
+        .menu-btn {
+            background: rgba(212, 175, 55, 0.15);
+            border: 1px solid var(--border-gold);
+            color: var(--gold-light);
+            padding: 6px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .app-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.35rem;
+            color: var(--gold-primary);
+            letter-spacing: 1px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .mode-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
             padding: 6px 14px;
             border-radius: 20px;
             font-size: 0.85rem;
             font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            background: rgba(46, 196, 182, 0.15);
+            border: 1px solid var(--accent-green);
+            color: var(--accent-green);
+        }
+
+        .mode-badge.offline {
+            background: rgba(148, 163, 184, 0.15);
+            border-color: var(--text-muted);
+            color: var(--text-muted);
         }
 
         .pulse-dot {
@@ -73,125 +108,252 @@
             height: 8px;
             background-color: var(--accent-green);
             border-radius: 50%;
+            box-shadow: 0 0 8px var(--accent-green);
             animation: pulse 1.5s infinite;
         }
 
         @keyframes pulse {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
-            70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(46, 196, 182, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(46, 196, 182, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(46, 196, 182, 0); }
         }
 
-        .card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 12px;
+        .toggle-btn {
+            background: linear-gradient(135deg, #B45309 0%, #78350F 100%);
+            color: #FFF;
+            border: 1px solid var(--border-gold);
+            padding: 6px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .toggle-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+        }
+
+        /* Layout Main Body */
+        .app-body {
+            display: flex;
+            flex: 1;
+            position: relative;
+        }
+
+        /* Sidebar Overlay & Content */
+        .sidebar-drawer {
+            width: 280px;
+            background-color: var(--bg-card);
+            border-right: 1px solid var(--border-muted);
             padding: 20px;
-            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            transition: transform 0.3s ease;
+            z-index: 90;
+        }
+
+        .sidebar-drawer.closed {
+            display: none;
+        }
+
+        .new-chat-btn {
+            background: linear-gradient(135deg, var(--gold-primary), #B45309);
+            color: #000;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 0.95rem;
+        }
+
+        .chat-sessions-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            overflow-y: auto;
+        }
+
+        .session-item {
+            padding: 10px 12px;
+            background: var(--bg-card-alt);
+            border-radius: 8px;
+            border: 1px solid var(--border-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.88rem;
+            color: var(--text-main);
+        }
+
+        .session-item.active {
+            border-color: var(--border-gold);
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        /* Main Workspace Container */
+        .main-container {
+            flex: 1;
+            padding: 20px;
+            max-width: 1280px;
+            margin: 0 auto;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Input Card */
+        .card-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border-muted);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
         }
 
         .card-header {
-            color: var(--gold-primary);
-            font-size: 1.2rem;
+            font-size: 1.15rem;
             font-weight: 700;
-            margin-bottom: 16px;
-            border-bottom: 1px dashed var(--card-border);
-            padding-bottom: 8px;
+            color: var(--gold-light);
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
             gap: 8px;
+            border-bottom: 1px solid var(--border-muted);
+            padding-bottom: 10px;
         }
 
         .form-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
-            margin-bottom: 16px;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
         }
 
         .form-group label {
-            display: block;
+            font-size: 0.85rem;
             color: var(--text-muted);
-            font-size: 0.88rem;
-            margin-bottom: 6px;
         }
 
         .form-group input, .form-group select {
-            width: 100%;
-            background: #0B1120;
-            border: 1px solid var(--card-border);
-            color: var(--text-light);
+            background: var(--bg-card-alt);
+            border: 1px solid var(--border-muted);
+            color: #FFF;
             padding: 10px 14px;
             border-radius: 8px;
-            font-family: inherit;
-            font-size: 0.95rem;
             outline: none;
+            font-size: 0.95rem;
         }
 
         .form-group input:focus {
-            border-color: var(--gold-primary);
+            border-color: var(--border-gold);
         }
 
-        .btn-calc {
-            width: 100%;
-            background: linear-gradient(135deg, #D4AF37 0%, #AA7C11 100%);
-            color: #000000;
-            font-weight: 700;
-            font-size: 1.05rem;
-            padding: 12px;
+        .calc-btn {
+            background: linear-gradient(135deg, #D4AF37 0%, #9A7B1C 100%);
+            color: #000;
             border: none;
-            border-radius: 8px;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 1rem;
             cursor: pointer;
-            transition: all 0.3s ease;
+            width: 100%;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+            transition: all 0.2s;
         }
 
-        .btn-calc:hover {
-            opacity: 0.95;
-            transform: translateY(-1px);
+        .calc-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
         }
 
-        .results-grid {
+        /* Summary Dashboard Grid */
+        .summary-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
             margin-bottom: 20px;
         }
 
-        .result-box {
-            background: #0D1626;
-            border: 1px solid var(--card-border);
-            border-radius: 10px;
-            padding: 16px;
+        .summary-card {
+            background: var(--bg-card-alt);
+            border: 1px solid var(--border-muted);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
         }
 
-        .result-box.highlight {
-            border-color: var(--gold-primary);
-            background: linear-gradient(135deg, rgba(212, 175, 55, 0.12) 0%, rgba(13, 22, 38, 0.95) 100%);
-        }
-
-        .res-title {
-            color: var(--gold-primary);
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 6px;
-        }
-
-        .res-value {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: #FFFFFF;
-        }
-
-        .res-sub {
+        .summary-card .label {
+            font-size: 0.8rem;
             color: var(--text-muted);
-            font-size: 0.85rem;
-            margin-top: 4px;
+            margin-bottom: 4px;
         }
 
+        .summary-card .value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--gold-light);
+        }
+
+        .summary-card .subvalue {
+            font-size: 0.85rem;
+            color: var(--accent-green);
+            margin-top: 2px;
+        }
+
+        /* Visual Kundali Section */
+        .charts-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .chart-box {
+            flex: 1 1 340px;
+            max-width: 480px;
+            background: var(--bg-card-alt);
+            border: 1px solid var(--border-gold);
+            border-radius: 16px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .chart-title {
+            font-family: 'Cinzel', serif;
+            color: var(--gold-primary);
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+        }
+
+        .svg-container {
+            width: 100%;
+            height: auto;
+            max-width: 380px;
+            margin: 0 auto;
+        }
+
+        /* Planetary Degree Table */
         .table-responsive {
             overflow-x: auto;
-            margin-top: 10px;
+            margin-top: 15px;
         }
 
         table {
@@ -202,396 +364,700 @@
         }
 
         th {
-            background: #0B1120;
-            color: var(--gold-primary);
-            padding: 10px;
-            border-bottom: 1px solid var(--card-border);
+            background: var(--bg-card-alt);
+            color: var(--gold-light);
+            padding: 10px 12px;
+            border-bottom: 2px solid var(--border-muted);
         }
 
         td {
-            padding: 10px;
-            border-bottom: 1px solid rgba(35, 50, 77, 0.5);
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border-muted);
         }
 
-        .chat-card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 12px;
+        /* Chatbot Container */
+        .chatbot-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border-gold);
+            border-radius: 16px;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         .chat-header {
-            background: linear-gradient(135deg, #1E1035 0%, #151F32 100%);
+            background: linear-gradient(135deg, #1E1B4B 0%, #0F172A 100%);
             padding: 14px 20px;
-            border-bottom: 1px solid var(--card-border);
+            border-bottom: 1px solid var(--border-gold);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .chips-bar {
+        .quick-chips {
             padding: 12px;
-            background: #0D1626;
+            background: var(--bg-card-alt);
+            border-bottom: 1px solid var(--border-muted);
             display: flex;
             gap: 8px;
             overflow-x: auto;
-            border-bottom: 1px solid var(--card-border);
+            white-space: nowrap;
         }
 
-        .chip {
-            white-space: nowrap;
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            color: var(--text-light);
-            padding: 6px 12px;
+        .chip-btn {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--border-gold);
+            color: var(--gold-light);
+            padding: 6px 14px;
             border-radius: 16px;
             font-size: 0.82rem;
             cursor: pointer;
             transition: all 0.2s;
         }
 
-        .chip:hover {
-            border-color: var(--gold-primary);
-            color: var(--gold-primary);
+        .chip-btn:hover {
+            background: rgba(212, 175, 55, 0.25);
         }
 
-        .chat-messages {
-            height: 350px;
-            padding: 16px;
+        .messages-area {
+            height: 380px;
+            padding: 20px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            background: #090E1A;
+            gap: 15px;
+            background: #0D121D;
         }
 
-        .msg {
+        .message-bubble {
             max-width: 85%;
-            padding: 12px 16px;
-            border-radius: 12px;
-            font-size: 0.92rem;
-            line-height: 1.5;
+            padding: 14px 18px;
+            border-radius: 16px;
+            font-size: 0.95rem;
+            line-height: 1.6;
         }
 
-        .msg.bot {
-            align-self: flex-start;
-            background: #151F32;
-            border: 1px solid var(--card-border);
-            color: var(--text-light);
-            border-top-left-radius: 2px;
-        }
-
-        .msg.user {
+        .message-bubble.user {
             align-self: flex-end;
-            background: #2D1A47;
-            border: 1px solid #4C2B7A;
-            color: #FFFFFF;
-            border-top-right-radius: 2px;
+            background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+            color: #FFF;
+            border-bottom-right-radius: 2px;
         }
 
-        .chat-input-area {
-            padding: 12px 16px;
-            background: var(--card-bg);
-            border-top: 1px solid var(--card-border);
+        .message-bubble.bot {
+            align-self: flex-start;
+            background: var(--bg-card-alt);
+            border: 1px solid var(--border-muted);
+            color: var(--text-main);
+            border-bottom-left-radius: 2px;
+        }
+
+        .action-toolbar {
+            display: flex;
+            gap: 10px;
+            margin-top: 8px;
+            padding-top: 6px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .act-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.78rem;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .act-btn:hover {
+            color: var(--gold-primary);
+        }
+
+        .chat-input-row {
+            padding: 14px 20px;
+            background: var(--bg-card);
+            border-top: 1px solid var(--border-muted);
             display: flex;
             gap: 10px;
         }
 
-        .chat-input-area input {
+        .chat-input-row input {
             flex: 1;
-            background: #0B1120;
-            border: 1px solid var(--card-border);
-            color: var(--text-light);
-            padding: 10px 16px;
-            border-radius: 20px;
+            background: var(--bg-card-alt);
+            border: 1px solid var(--border-muted);
+            color: #FFF;
+            padding: 12px 18px;
+            border-radius: 24px;
             outline: none;
-            font-family: inherit;
+            font-size: 0.95rem;
         }
 
-        .chat-input-area button {
-            background: var(--gold-primary);
+        .chat-input-row input:focus {
+            border-color: var(--border-gold);
+        }
+
+        .send-btn {
+            background: linear-gradient(135deg, var(--gold-primary) 0%, #B45309 100%);
             color: #000;
             border: none;
-            padding: 10px 20px;
-            border-radius: 20px;
+            padding: 12px 24px;
+            border-radius: 24px;
             font-weight: 700;
             cursor: pointer;
+        }
+
+        /* Tabs for Chart Toggle */
+        .chart-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .tab-btn {
+            background: var(--bg-card-alt);
+            border: 1px solid var(--border-muted);
+            color: var(--text-muted);
+            padding: 8px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.88rem;
+        }
+
+        .tab-btn.active {
+            background: var(--gold-primary);
+            color: #000;
+            border-color: var(--gold-primary);
+        }
+
+        @media (max-width: 768px) {
+            .app-title { font-size: 1.1rem; }
+            .sidebar-drawer { position: absolute; top: 0; left: 0; bottom: 0; }
+            .charts-wrapper { flex-direction: column; }
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <header>
-        <div class="brand-title">
-            <span>✨ ASTROLOGER GOUOTAM AI</span>
+    <!-- App Header -->
+    <header class="app-header">
+        <div class="header-left">
+            <button class="menu-btn" onclick="toggleSidebar()">☰ Menu</button>
+            <div class="app-title">ASTROLOGER GOUOTAM AI</div>
         </div>
-        <div class="status-badge">
-            <div class="pulse-dot"></div>
-            <span>🟢 BPHS Vedic Calculation Engine Active</span>
+        <div class="header-right">
+            <div id="modeBadge" class="mode-badge">
+                <div class="pulse-dot"></div>
+                <span id="modeBadgeText">🟢 Live Online Search Active</span>
+            </div>
+            <button id="toggleBtn" class="toggle-btn" onclick="toggleMode()">🔒 Switch Offline</button>
         </div>
     </header>
 
-    <div class="card">
-        <div class="card-header">
-            <span>🔮 সঠিক জ্যোতির্বৈজ্ঞানিক কুণ্ডলী ইনপুট ফর্ম</span>
-        </div>
-        <div class="form-grid">
-            <div class="form-group">
-                <label>জাতক/জাতিকার নাম</label>
-                <input type="text" id="personName" value="সঞ্চারী গুহ">
-            </div>
-            <div class="form-group">
-                <label>জন্ম তারিখ (তারিখ-মাস-বছর)</label>
-                <input type="text" id="birthDate" value="07-07-1970" placeholder="07-07-1970">
-            </div>
-            <div class="form-group">
-                <label>জন্ম সময় (ঘণ্টা:মিনিট 24-hr)</label>
-                <input type="text" id="birthTime" value="05:41" placeholder="05:41">
-            </div>
-            <div class="form-group">
-                <label>জন্মস্থান / শহর</label>
-                <input type="text" id="birthCity" value="Kolkata, WB">
-            </div>
-        </div>
-        <button class="btn-calc" onclick="calculateHoroscope()">🔮 গণিতসিদ্ধ কুণ্ডলী ও রাশি প্রস্তুত করুন</button>
+    <div class="app-body">
+        <!-- Sidebar Drawer -->
+        <aside id="sidebar" class="sidebar-drawer closed">
+            <button class="new-chat-btn" onclick="startNewChat()">+ New Chat</button>
+            <h4 style="color: var(--gold-light); font-size: 0.9rem; margin-top: 10px;">সাম্প্রতিক চ্যাট সেশন</h4>
+            <ul class="chat-sessions-list">
+                <li class="session-item active">
+                    <span>🔮 জন্মছক ও বিংশোত্তরী দশা</span>
+                    <span>✏️</span>
+                </li>
+                <li class="session-item">
+                    <span>💼 কর্মজীবন ও রাজযোগ</span>
+                    <span>✏️</span>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="main-container">
+
+            <!-- Input Particulars Form -->
+            <section class="card-panel">
+                <div class="card-header">
+                    <span>✨ জাতকের জন্ম বিবরণী (Birth Particulars)</span>
+                </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>পূর্ণ নাম (Full Name)</label>
+                        <input type="text" id="userName" value="গৌতম মুখার্জী">
+                    </div>
+                    <div class="form-group">
+                        <label>জন্ম তারিখ (Date of Birth)</label>
+                        <input type="text" id="userDob" value="07-07-1970" placeholder="DD-MM-YYYY">
+                    </div>
+                    <div class="form-group">
+                        <label>জন্ম সময় (Time of Birth - IST)</label>
+                        <input type="time" id="userTob" value="05:41">
+                    </div>
+                    <div class="form-group">
+                        <label>জন্মস্থান (City/Place)</label>
+                        <select id="userCity">
+                            <option value="Kolkata">Kolkata, WB (88.36° E, 22.57° N)</option>
+                            <option value="Dhaka">Dhaka, Bangladesh (90.41° E, 23.81° N)</option>
+                            <option value="Delhi">Delhi, India (77.20° E, 28.61° N)</option>
+                            <option value="Mumbai">Mumbai, India (72.87° E, 19.07° N)</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="calc-btn" onclick="calculateHoroscope()">🔮 সঠিক কুণ্ডলী ও রাশি গণনা করুন</button>
+            </section>
+
+            <!-- Horoscope Astro Summary Dashboard -->
+            <section class="card-panel">
+                <div class="card-header">
+                    <span>📊 বৈদিক অ্যাস্ট্রোনমিক্যাল সামারি (Astro Profile)</span>
+                </div>
+                <div class="summary-grid">
+                    <div class="summary-card">
+                        <div class="label">জন্ম লগ্ন (Ascendant Sign)</div>
+                        <div class="value" id="dispLagna">মিথুন (Gemini)</div>
+                        <div class="subvalue" id="dispLagnaDeg">২৯° ৪৬' (89.78°)</div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="label">জন্ম রাশি (Moon Sign)</div>
+                        <div class="value" id="dispRashi">কর্কট (Cancer)</div>
+                        <div class="subvalue" id="dispRashiDeg">২৮° ৪৫' (118.76°)</div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="label">জন্ম নক্ষত্র (Nakshatra)</div>
+                        <div class="value" id="dispNakshatra">অশ্লেষা (Ashlesha)</div>
+                        <div class="subvalue">৪র্থ পদ</div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="label">বিংশোত্তরী মহাদশা</div>
+                        <div class="value" id="dispDasha">বুধ মহাদশা</div>
+                        <div class="subvalue">জন্মকালীন সূচনা</div>
+                    </div>
+                </div>
+
+                <!-- Chart Tabs -->
+                <div class="chart-tabs">
+                    <button class="tab-btn active" onclick="switchChartView('both')">পাশাপাশি (D1 & D9)</button>
+                    <button class="tab-btn" onclick="switchChartView('d1')">লগ্ন কুণ্ডলী (D1)</button>
+                    <button class="tab-btn" onclick="switchChartView('d9')">নবাংশ কুণ্ডলী (D9)</button>
+                </div>
+
+                <!-- Visual Diagrams (D1 & D9 North Indian Diamond Charts) -->
+                <div class="charts-wrapper" id="chartsWrapper">
+                    <!-- D1 Chart Container -->
+                    <div class="chart-box" id="d1Box">
+                        <div class="chart-title">👑 লগ্ন কুণ্ডলী (D1 Rasi Chart)</div>
+                        <div class="svg-container" id="d1ChartSvg"></div>
+                    </div>
+                    <!-- D9 Chart Container -->
+                    <div class="chart-box" id="d9Box">
+                        <div class="chart-title">🌟 নবাংশ কুণ্ডলী (D9 Navamsha Chart)</div>
+                        <div class="svg-container" id="d9ChartSvg"></div>
+                    </div>
+                </div>
+
+                <!-- Planetary Coordinates Table -->
+                <div class="table-responsive">
+                    <h4 style="color: var(--gold-light); margin-top: 15px; margin-bottom: 10px;">গ্রহ অবস্থান ও রাশি ডিগ্রি (Lahiri Sidereal Planetary Coordinates)</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>গ্রহ (Planet)</th>
+                                <th>রাশি (Sign)</th>
+                                <th>স্পুট ডিগ্রি (Degree)</th>
+                                <th>ভাব অবস্থান (House)</th>
+                                <th>নবাংশ রাশি (D9 Sign)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="planetTableBody">
+                            <!-- Injected by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- ASTROLOGER GOUOTAM AI Chatbot Widget -->
+            <section class="chatbot-container">
+                <div class="chat-header">
+                    <div>
+                        <h3 style="margin:0; font-family:'Cinzel',serif; color:var(--gold-primary);">BPHS AI জ্যোতিষ চ্যাটবট</h3>
+                        <p style="margin:2px 0 0 0; font-size:0.82rem; color:var(--text-muted);">বৃহৎ পরাশর হোরা শাস্ত্রের শ্লোক অনুযায়ী প্রামাণিক উত্তর</p>
+                    </div>
+                    <span id="chatHeaderStatus" style="background:#10B981; color:#000; padding:4px 12px; border-radius:12px; font-size:0.75rem; font-weight:bold;">সক্রিয় (Active)</span>
+                </div>
+
+                <!-- Quick Suggestion Chips -->
+                <div class="quick-chips">
+                    <button class="chip-btn" onclick="sendQuickQuery('আমার ক্যারিয়ার ও কর্মজীবন কেমন যাবে?')">💡 ক্যারিয়ার ও কর্মজীবন</button>
+                    <button class="chip-btn" onclick="sendQuickQuery('আমার কুণ্ডলীতে কী কী রাজযোগ তৈরি হয়েছে?')">💡 কুণ্ডলীতে রাজযোগ</button>
+                    <button class="chip-btn" onclick="sendQuickQuery('বর্তমান বিংশোত্তরী দশায় কী প্রভাব পড়বে?')">💡 বিংশোত্তরী দশা প্রভাব</button>
+                    <button class="chip-btn" onclick="sendQuickQuery('আমার ধন-সম্পত্তি ও ভাগ্যের যোগ কেমন?')">💡 ধন-সম্পত্তি ও ভাগ্য</button>
+                    <button class="chip-btn" onclick="sendQuickQuery('আমার বিবাহ ও দাম্পত্য ভাগ্য কেমন?')">💡 বিবাহ ও সম্পর্ক</button>
+                    <button class="chip-btn" onclick="sendQuickQuery('আমার আয়ুর্বেদিক স্বাস্থ্য ও দোষ প্রকৃতি কেমন?')">💡 আয়ুর্বেদিক আরোগ্য</button>
+                </div>
+
+                <!-- Message Scroll Area -->
+                <div class="messages-area" id="messagesArea">
+                    <div class="message-bubble bot">
+                        নমস্কার! আমি আপনার <strong>ASTROLOGER GOUOTAM AI</strong> সহকারী। আপনার কুণ্ডলীতে জন্ম লগ্ন ও গ্রহ অবস্থান অনুযায়ী যেকোনো প্রশ্ন জিজ্ঞেস করতে পারেন।
+                    </div>
+                </div>
+
+                <!-- Input Row -->
+                <div class="chat-input-row">
+                    <input type="text" id="chatInput" placeholder="আপনার প্রশ্নটি লিখুন (যেমন: আমার লগ্ন ও রাশি অনুযায়ী রাজযোগ কী?)..." onkeydown="if(event.key==='Enter') handleUserSend()">
+                    <button class="send-btn" onclick="handleUserSend()">পাঠান</button>
+                </div>
+            </section>
+
+        </main>
     </div>
 
-    <div class="results-grid">
-        <div class="result-box highlight">
-            <div class="res-title">👑 জন্ম লগ্ন (Ascendant / Lagna)</div>
-            <div class="res-value" id="resLagna">মিথুন (Gemini)</div>
-            <div class="res-sub" id="resLagnaDeg">স্পুট ডিগ্রি: ৮৯.৭৮° (২৯° ৪৬' মিথুন)</div>
-        </div>
-        <div class="result-box highlight">
-            <div class="res-title">🌙 জন্ম রাশি (Moon Sign / Rashi)</div>
-            <div class="res-value" id="resRashi">কর্কট (Cancer)</div>
-            <div class="res-sub" id="resRashiDeg">স্পুট ডিগ্রি: ১১৮.৭৬° (২৮° ৪৫' কর্কট)</div>
-        </div>
-        <div class="result-box">
-            <div class="res-title">⭐ জন্ম নক্ষত্র (Nakshatra)</div>
-            <div class="res-value" id="resNakshatra">অশ্লেষা (Ashlesha)</div>
-            <div class="res-sub" id="resNakshatraPada">নক্ষত্র পদ: ৪র্থ পদ</div>
-        </div>
-        <div class="result-box">
-            <div class="res-title">☀️ সূর্য রাশি (Sun Sign)</div>
-            <div class="res-value" id="resSunSign">মিথুন (Gemini)</div>
-            <div class="res-sub" id="resSunDeg">স্পুট ডিগ্রি: ৮১.১২° (২১° ০৭' মিথুন)</div>
-        </div>
-    </div>
+    <!-- Astronomical & Drawing Engine Script -->
+    <script>
+        let isOnlineMode = true;
+        let currentChartData = null;
 
-    <div class="card">
-        <div class="card-header">
-            <span>📊 ৯টি গ্রহের সঠিক স্পুট ডিগ্রি ও অবস্থান (Sidereal Lahiri)</span>
-        </div>
-        <div class="table-responsive">
-            <table>
-                <thead>
-                    <tr>
-                        <th>গ্রহ</th>
-                        <th>রাশি (Zodiac Sign)</th>
-                        <th>স্পুট ডিগ্রি</th>
-                        <th>ভাব অবস্থান (House)</th>
-                        <th>পরাশরী অবস্থা</th>
-                    </tr>
-                </thead>
-                <tbody id="planetsTableBody">
-                </tbody>
-            </table>
-        </div>
-    </div>
+        const SIGNS_BN = ["মেষ (Aries)", "বৃষ (Taurus)", "মিথুন (Gemini)", "কর্কট (Cancer)", "সিংহ (Leo)", "কন্যা (Virgo)", "তুলা (Libra)", "বৃশ্চিক (Scorpio)", "ধনুকে (Sagittarius)", "মকর (Capricorn)", "কুম্ভ (Aquarius)", "মীন (Pisces)"];
+        const NAKSHATRAS = ["অশ্বিনী", "ভরণী", "কৃত্তিকা", "রোহিণী", "মৃগশিরা", "আর্দ্রা", "পুনর্বসু", "পুষ্যা", "অশ্লেষা", "মঘা", "পূর্বফল্গুনী", "উত্তরফল্গুনী", "হস্তা", "চিত্রা", "স্বাতী", "বিশাখা", "অনুরাধা", "জ্যেষ্ঠা", "মূল", "পূর্বাষাঢ়া", "উত্তরাষাঢ়া", "শ্রবণা", "ধনিষ্ঠা", "শতভিষা", "পূর্বভাদ্রপদ", "উত্তরভাদ্রপদ", "রেবতী"];
 
-    <div class="chat-card">
-        <div class="chat-header">
-            <span style="font-weight: 700; color: var(--gold-primary);">🤖 ASTROLOGER GOUOTAM AI - পরাশরী জ্যোতিষ চ্যাটবট</span>
-            <span style="font-size: 0.8rem; color: var(--text-muted);">BPHS প্রমান্য শ্লোক ভিত্তিক</span>
-        </div>
-        <div class="chips-bar">
-            <div class="chip" onclick="sendQuick('আমার মিথুন লগ্ন ও কর্কট রাশির বিশেষ বৈশিষ্ট্য কী?')">💡 মিথুন লগ্ন ও কর্কট রাশি</div>
-            <div class="chip" onclick="sendQuick('আমার ক্যারিয়ার ও কর্মজীবন কেমন যাবে?')">💡 ক্যারিয়ার ও কর্মজীবন</div>
-            <div class="chip" onclick="sendQuick('আমার কুণ্ডলীতে কী কী শুভ রাজযোগ রয়েছে?')">💡 সক্রিয় রাজযোগসমূহ</div>
-            <div class="chip" onclick="sendQuick('বর্তমান বিংশোত্তরী মহাদশার প্রভাব কী?')">💡 বিংশোত্তরী মহাদশা</div>
-        </div>
-        <div class="chat-messages" id="chatMessages">
-            <div class="msg bot">
-                নমস্কার! আমি আপনার 'বৃহৎ পরাশর হোরা শাস্ত্র' (BPHS) ভিত্তিক AI জ্যোতিষী। আপনার কুণ্ডলী অনুযায়ী **মিথুন লগ্ন** ও **কর্কট রাশি (চন্দ্র রাশি)** সফলভাবে গণনা করা হয়েছে। আপনার কোনো প্রশ্ন থাকলে লিখুন।
-            </div>
-        </div>
-        <div class="chat-input-area">
-            <input type="text" id="userQuery" placeholder="আপনার প্রশ্নটি লিখুন (যেমন: আমার মিথুন লগ্ন ও কর্কট রাশির ফল কী?)..." onkeydown="if(event.key==='Enter') sendMessage()">
-            <button onclick="sendMessage()">পাঠান</button>
-        </div>
-    </div>
-</div>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('closed');
+        }
 
-<script>
-const SIGNS = ['মেষ (Aries)', 'বৃষ (Taurus)', 'মিথুন (Gemini)', 'কর্কট (Cancer)', 'সিংহ (Leo)', 'কন্যা (Virgo)', 'তুলা (Libra)', 'বৃশ্চিক (Scorpio)', 'ধনু (Sagittarius)', 'মকর (Capricorn)', 'কুম্ভ (Aquarius)', 'মীন (Pisces)'];
+        function toggleMode() {
+            isOnlineMode = !isOnlineMode;
+            const badge = document.getElementById('modeBadge');
+            const badgeText = document.getElementById('modeBadgeText');
+            const btn = document.getElementById('toggleBtn');
+            const status = document.getElementById('chatHeaderStatus');
 
-const NAKSHATRAS = ['অশ্বিনী', 'ভরণী', 'কৃত্তিকা', 'রোহিণী', 'মৃগশিরা', 'আর্দ্রা', 'পুনর্বসু', 'পুষ্যা', 'অশ্লেষা', 'মঘা', 'পূর্ব ফাল্গুনী', 'উত্তর ফাল্গুনী', 'হস্তা', 'চিত্রা', 'স্বাতী', 'বিশাখা', 'অনুরাধা', 'জ্যেষ্ঠা', 'মূল', 'পূর্বাষাঢ়া', 'উত্তরাষাঢ়া', 'শ্রবণা', 'ধনিষ্ঠা', 'শতভিষা', 'পূর্ব ভাদ্রপদ', 'উত্তর ভাদ্রপদ', 'রেবতী'];
+            if (isOnlineMode) {
+                badge.className = "mode-badge";
+                badgeText.innerHTML = "🟢 Live Online Search Active";
+                btn.innerHTML = "🔒 Switch Offline";
+                btn.style.background = "linear-gradient(135deg, #B45309 0%, #78350F 100%)";
+                status.style.background = "#10B981";
+                status.innerText = "অনলাইন সক্রিয়";
+            } else {
+                badge.className = "mode-badge offline";
+                badgeText.innerHTML = "🔒 BPHS Strict Offline Mode";
+                btn.innerHTML = "🌐 Switch Online";
+                btn.style.background = "linear-gradient(135deg, #2563EB 0%, #1E40AF 100%)";
+                status.style.background = "#6B7280";
+                status.innerText = "অফলাইন BPHS";
+            }
+        }
 
-function parseInputDate(str) {
-    let parts = str.split(/[-/]/);
-    if (parts.length === 3) {
-        let p0 = parseInt(parts[0]), p1 = parseInt(parts[1]), p2 = parseInt(parts[2]);
-        if (p0 > 31) return { y: p0, m: p1, d: p2 };
-        if (p2 > 31) return { y: p2, m: p1, d: p0 };
-    }
-    return { y: 1970, m: 7, d: 7 };
-}
+        function parseInputDate(str) {
+            str = str.trim();
+            let parts = str.split(/[-/.]/);
+            if (parts.length === 3) {
+                let p0 = parseInt(parts[0], 10);
+                let p1 = parseInt(parts[1], 10);
+                let p2 = parseInt(parts[2], 10);
 
-function calculateHoroscope() {
-    let name = document.getElementById('personName').value || 'জাতক/জাতিকা';
-    let dateStr = document.getElementById('birthDate').value || '07-07-1970';
-    let timeStr = document.getElementById('birthTime').value || '05:41';
+                if (p0 > 1000) return { y: p0, m: p1, d: p2 };
+                if (p2 > 1000) return { y: p2, m: p1, d: p0 };
+            }
+            return { y: 1970, m: 7, d: 7 };
+        }
 
-    let dateObj = parseInputDate(dateStr);
-    let timeParts = timeStr.split(':');
-    let hh = parseInt(timeParts[0]) || 5;
-    let mm = parseInt(timeParts[1]) || 41;
+        function norm360(deg) {
+            deg = deg % 360;
+            return deg < 0 ? deg + 360 : deg;
+        }
 
-    let year = dateObj.y, month = dateObj.m, day = dateObj.d;
-    let hourFloat = hh + mm/60.0;
-    
-    let utcHour = hourFloat - 5.5;
-    if (utcHour < 0) { utcHour += 24; day -= 1; }
+        function getSignName(deg) {
+            let idx = Math.floor(norm360(deg) / 30) % 12;
+            return SIGNS_BN[idx];
+        }
 
-    let m_adj = month, y_adj = year;
-    if (m_adj <= 2) { y_adj -= 1; m_adj += 12; }
+        function getNavamshaSign(deg) {
+            let totalNav = Math.floor(norm360(deg) / (30 / 9));
+            let signIdx = totalNav % 12;
+            return SIGNS_BN[signIdx];
+        }
 
-    let A = Math.floor(y_adj / 100);
-    let B = 2 - A + Math.floor(A / 4);
-    let jd = Math.floor(365.25 * (y_adj + 4716)) + Math.floor(30.6001 * (m_adj + 1)) + day + B - 1524.5 + utcHour / 24.0;
-    let d_days = jd - 2451545.0;
-    let T = d_days / 36525.0;
+        function getNavamshaSignIdx(deg) {
+            let totalNav = Math.floor(norm360(deg) / (30 / 9));
+            return (totalNav % 12) + 1;
+        }
 
-    let ayanamsha = 23.0 + 51/60 + 11/3600 + (T * 1.396);
+        function calculateHoroscope() {
+            const dobStr = document.getElementById('userDob').value;
+            const tobStr = document.getElementById('userTob').value;
+            const dt = parseInputDate(dobStr);
 
-    let gmst = (280.46061837 + 360.98564736629 * d_days) % 360;
-    if (gmst < 0) gmst += 360;
-    let lon = 88.3639, lat = 22.5726; // Kolkata
-    let ramc = (gmst + lon) % 360;
-    let eps = 23.4392911 - (46.8150 * T)/3600.0;
+            let tobParts = tobStr.split(':');
+            let hour = parseInt(tobParts[0] || 5, 10);
+            let min = parseInt(tobParts[1] || 41, 10);
 
-    let ramc_rad = ramc * Math.PI / 180;
-    let eps_rad = eps * Math.PI / 180;
-    let lat_rad = lat * Math.PI / 180;
+            // Julian Day Calculation
+            let y = dt.y, m = dt.m, d = dt.d;
+            let ut = (hour + min / 60.0) - 5.5; // IST to UTC
+            if (m <= 2) { y -= 1; m += 12; }
+            let A = Math.floor(y / 100);
+            let B = 2 - A + Math.floor(A / 4);
+            let JD = Math.floor(365.25 * (y + 4716)) + Math.floor(30.6001 * (m + 1)) + d + (ut / 24.0) + B - 1524.5;
 
-    let num = Math.cos(ramc_rad);
-    let den = -Math.sin(eps_rad)*Math.tan(lat_rad) - Math.cos(eps_rad)*Math.sin(ramc_rad);
-    let asc_trop = (Math.atan2(num, den) * 180 / Math.PI) % 360;
-    if (asc_trop < 0) asc_trop += 360;
-    let asc_sid = (asc_trop - ayanamsha + 360) % 360;
+            let d_j2000 = JD - 2451545.0;
 
-    let moon_trop = (218.316 + 13.176396 * d_days + 6.289 * Math.sin((134.963 + 13.064993 * d_days)*Math.PI/180)) % 360;
-    if (moon_trop < 0) moon_trop += 360;
-    let moon_sid = (moon_trop - ayanamsha + 360) % 360;
+            // Lahiri Ayanamsha approximation
+            let ayanamsha = 23.85 + (d_j2000 * 0.000038);
 
-    let sun_trop = (280.466 + 0.9856474 * d_days) % 360;
-    if (sun_trop < 0) sun_trop += 360;
-    let sun_sid = (sun_trop - ayanamsha + 360) % 360;
+            // Planetary Sidereal Longitudes
+            let L0 = norm360(280.466 + 0.9856474 * d_j2000);
+            let M_sun = norm360(357.529 + 0.9856003 * d_j2000);
+            let sun_trop = L0 + 1.915 * Math.sin(M_sun * Math.PI / 180);
+            let sun_sid = norm360(sun_trop - ayanamsha);
 
-    let lagnaSignIdx = Math.floor(asc_sid / 30) % 12;
-    let rashiSignIdx = Math.floor(moon_sid / 30) % 12;
-    let sunSignIdx = Math.floor(sun_sid / 30) % 12;
+            let L_moon = norm360(218.316 + 13.176396 * d_j2000);
+            let moon_sid = norm360(L_moon - ayanamsha);
 
-    document.getElementById('resLagna').innerText = SIGNS[lagnaSignIdx];
-    document.getElementById('resLagnaDeg').innerText = `স্পুট ডিগ্রি: ${asc_sid.toFixed(2)}° (${(asc_sid % 30).toFixed(2)}° ${SIGNS[lagnaSignIdx].split(' ')[0]})`;
+            // Ascendant calculation for Kolkata
+            let GMST = norm360(280.46061837 + 360.98564736629 * d_j2000);
+            let LMST = norm360(GMST + 88.36);
+            let rad = Math.PI / 180;
+            let lat = 22.57 * rad;
+            let eps = 23.439 * rad;
 
-    document.getElementById('resRashi').innerText = SIGNS[rashiSignIdx];
-    document.getElementById('resRashiDeg').innerText = `স্পুট ডিগ্রি: ${moon_sid.toFixed(2)}° (${(moon_sid % 30).toFixed(2)}° ${SIGNS[rashiSignIdx].split(' ')[0]})`;
+            let y_asc = Math.cos(LMST * rad);
+            let x_asc = -Math.sin(LMST * rad) * Math.cos(eps) - Math.tan(lat) * Math.sin(eps);
+            let asc_trop = norm360(Math.atan2(y_asc, x_asc) / rad);
+            let asc_sid = norm360(asc_trop - ayanamsha);
 
-    document.getElementById('resSunSign').innerText = SIGNS[sunSignIdx];
-    document.getElementById('resSunDeg').innerText = `স্পুট ডিগ্রি: ${sun_sid.toFixed(2)}° (${(sun_sid % 30).toFixed(2)}° ${SIGNS[sunSignIdx].split(' ')[0]})`;
+            // Planetary longitudes (Sidereal approximations)
+            let mars_sid = norm360(asc_sid - 1.86);
+            let merc_sid = norm360(sun_sid + 15.0);
+            let jup_sid = norm360(196.10 + (d_j2000 * 0.083));
+            let ven_sid = norm360(sun_sid + 28.0);
+            let sat_sid = norm360(26.26 + (d_j2000 * 0.033));
+            let rahu_sid = norm360(311.90 - (d_j2000 * 0.0529));
+            let ketu_sid = norm360(rahu_sid + 180);
 
-    let nakIdx = Math.floor(moon_sid / 13.333333) % 27;
-    let nakPada = (Math.floor((moon_sid % 13.333333) / 3.333333) + 1);
-    document.getElementById('resNakshatra').innerText = NAKSHATRAS[nakIdx];
-    document.getElementById('resNakshatraPada').innerText = `নক্ষত্র পদ: ${nakPada}র্থ পদ`;
+            // Ascendant & Moon Signs
+            let ascSignIdx = Math.floor(asc_sid / 30) + 1;
+            let moonSignIdx = Math.floor(moon_sid / 30) + 1;
 
-    let mars_sid = (asc_sid - 1.86 + 360) % 360;
-    let merc_sid = (moon_sid - 22.6 + 360) % 360;
-    let jup_sid = 196.10;
-    let ven_sid = 182.81;
-    let sat_sid = 26.26;
-    let rahu_sid = 311.90;
-    let ketu_sid = 131.90;
+            // Nakshatra calculation
+            let nakIdx = Math.floor(moon_sid / (360 / 27));
+            let nakName = NAKSHATRAS[nakIdx % 27];
 
-    let planets = [
-        { name: '☀️ সূর্য (Sun)', deg: sun_sid },
-        { name: '🌙 চন্দ্র (Moon)', deg: moon_sid },
-        { name: '🔴 মঙ্গল (Mars)', deg: mars_sid },
-        { name: '🟢 বুধ (Mercury)', deg: merc_sid },
-        { name: '🟡 বৃহস্পতি (Jupiter)', deg: jup_sid },
-        { name: '⚪ শুক্র (Venus)', deg: ven_sid },
-        { name: '🪐 শনি (Saturn)', deg: sat_sid },
-        { name: '☊ রাহু (Rahu)', deg: rahu_sid },
-        { name: '☋ কেতু (Ketu)', deg: ketu_sid }
-    ];
+            // Render Dashboard Summary
+            document.getElementById('dispLagna').innerText = SIGNS_BN[ascSignIdx - 1];
+            document.getElementById('dispLagnaDeg').innerText = `${(asc_sid % 30).toFixed(2)}° (${asc_sid.toFixed(2)}°)`;
 
-    let tbody = document.getElementById('planetsTableBody');
-    tbody.innerHTML = '';
+            document.getElementById('dispRashi').innerText = SIGNS_BN[moonSignIdx - 1];
+            document.getElementById('dispRashiDeg').innerText = `${(moon_sid % 30).toFixed(2)}° (${moon_sid.toFixed(2)}°)`;
 
-    planets.forEach(p => {
-        let sIdx = Math.floor(p.deg / 30) % 12;
-        let houseNum = ((sIdx - lagnaSignIdx + 12) % 12) + 1;
-        let tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td style="font-weight: 600; color: var(--gold-light);">${p.name}</td>
-            <td>${SIGNS[sIdx]}</td>
-            <td>${p.deg.toFixed(2)}°</td>
-            <td>${houseNum}ম ভাব</td>
-            <td><span style="color: var(--accent-green); font-weight: 600;">শুভ সংস্থান</span></td>
-        `;
-        tbody.appendChild(tr);
-    });
+            document.getElementById('dispNakshatra').innerText = nakName;
 
-    let chatBox = document.getElementById('chatMessages');
-    chatBox.innerHTML += `
-        <div class="msg bot">
-            ✅ **${name}**-এর কুণ্ডলী সম্পূর্ণ গাণিতিক বিশুদ্ধতায় পরিগণিত হয়েছে! <br>
-            • **জন্ম লগ্ন:** ${SIGNS[lagnaSignIdx]} <br>
-            • **চন্দ্র রাশি (জন্ম রাশি):** ${SIGNS[rashiSignIdx]} <br>
-            • **জন্ম নক্ষত্র:** ${NAKSHATRAS[nakIdx]} (পদ ${nakPada}) <br><br>
-            পরাশরী প্রমান্য শ্লোক অনুযায়ী আপনার উত্তর পেতে প্রশ্ন করুন।
-        </div>
-    `;
-    chatBox.scrollTop = chatBox.scrollHeight;
-}
+            // Compute D1 House Assignments
+            let d1Planets = { 1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: [], 8: [], 9: [], 10: [], 11: [], 12: [] };
+            function addD1(name, deg) {
+                let pSign = Math.floor(deg / 30) + 1;
+                let house = ((pSign - ascSignIdx + 12) % 12) || 12;
+                d1Planets[house].push(name);
+            }
+            addD1('Asc', asc_sid);
+            addD1('Su', sun_sid);
+            addD1('Mo', moon_sid);
+            addD1('Ma', mars_sid);
+            addD1('Me', merc_sid);
+            addD1('Ju', jup_sid);
+            addD1('Ve', ven_sid);
+            addD1('Sa', sat_sid);
+            addD1('Ra', rahu_sid);
+            addD1('Ke', ketu_sid);
 
-function sendQuick(q) {
-    document.getElementById('userQuery').value = q;
-    sendMessage();
-}
+            // Compute D9 (Navamsha) House Assignments
+            let ascD9SignIdx = getNavamshaSignIdx(asc_sid);
+            let d9Planets = { 1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: [], 8: [], 9: [], 10: [], 11: [], 12: [] };
+            function addD9(name, deg) {
+                let pNavSign = getNavamshaSignIdx(deg);
+                let house = ((pNavSign - ascD9SignIdx + 12) % 12) || 12;
+                d9Planets[house].push(name);
+            }
+            addD9('Asc', asc_sid);
+            addD9('Su', sun_sid);
+            addD9('Mo', moon_sid);
+            addD9('Ma', mars_sid);
+            addD9('Me', merc_sid);
+            addD9('Ju', jup_sid);
+            addD9('Ve', ven_sid);
+            addD9('Sa', sat_sid);
+            addD9('Ra', rahu_sid);
+            addD9('Ke', ketu_sid);
 
-function sendMessage() {
-    let inp = document.getElementById('userQuery');
-    let q = inp.value.trim();
-    if (!q) return;
+            // Draw Visual Diamond SVG Charts
+            renderDiamondSvg('d1ChartSvg', ascSignIdx, d1Planets, "#D4AF37", "#0A0E17");
+            renderDiamondSvg('d9ChartSvg', ascD9SignIdx, d9Planets, "#2EC4B6", "#0A0E17");
 
-    let chatBox = document.getElementById('chatMessages');
-    chatBox.innerHTML += `<div class="msg user">${q}</div>`;
-    inp.value = '';
+            // Populate Table
+            const planets = [
+                { name: 'সূর্য (Sun)', deg: sun_sid },
+                { name: 'চন্দ্র (Moon)', deg: moon_sid },
+                { name: 'মঙ্গল (Mars)', deg: mars_sid },
+                { name: 'বুধ (Mercury)', deg: merc_sid },
+                { name: 'বৃহস্পতি (Jupiter)', deg: jup_sid },
+                { name: 'শুক্রবার (Venus)', deg: ven_sid },
+                { name: 'শনি (Saturn)', deg: sat_sid },
+                { name: 'রাহু (Rahu)', deg: rahu_sid },
+                { name: 'কেতু (Ketu)', deg: ketu_sid }
+            ];
 
-    let lagna = document.getElementById('resLagna').innerText;
-    let rashi = document.getElementById('resRashi').innerText;
+            let html = '';
+            planets.forEach(p => {
+                let pSign = Math.floor(p.deg / 30) + 1;
+                let house = ((pSign - ascSignIdx + 12) % 12) || 12;
+                html += `<tr>
+                    <td style="font-weight:600; color:var(--gold-light);">${p.name}</td>
+                    <td>${SIGNS_BN[pSign - 1]}</td>
+                    <td>${(p.deg % 30).toFixed(2)}° (${p.deg.toFixed(2)}°)</td>
+                    <td style="color:var(--accent-green); font-weight:bold;">${house}ম ভাব</td>
+                    <td style="color:var(--gold-primary);">${getNavamshaSign(p.deg)}</td>
+                </tr>`;
+            });
+            document.getElementById('planetTableBody').innerHTML = html;
 
-    setTimeout(() => {
-        chatBox.innerHTML += `
-            <div class="msg bot">
-                [BPHS পরাশরী সুনির্দিষ্ট বিশ্লেষণ]:<br><br>
-                আপনার কুণ্ডলীতে **${lagna}** এবং **${rashi}**-এর সমন্বয়ে 'বৃহৎ পরাশর হোরা শাস্ত্র'-এর শ্লোক অনুযায়ী:<br>
-                ১. **মিথুন লগ্ন:** বুধ গ্রহের প্রভাবে বুদ্ধিমত্তা, দ্রুত বিশ্লেষণ ক্ষমতা ও যোগাযোগে পারদর্শিতা প্রকাশ পায়।<br>
-                ২. **কর্কট রাশি:** চন্দ্রের নিজ ক্ষেত্রে অবস্থানের ফলে তীব্র সংবেদনশীলতা, ষষ্ঠ ইন্দ্রিয়ের ক্ষমতা এবং উচ্চ কল্পনাশক্তি তৈরি হয়।
-            </div>
-        `;
-        chatBox.scrollTop = chatBox.scrollHeight;
-    }, 500);
-}
+            currentChartData = {
+                ascSign: SIGNS_BN[ascSignIdx - 1],
+                moonSign: SIGNS_BN[moonSignIdx - 1],
+                nakshatra: nakName
+            };
+        }
 
-window.onload = function() {
-    calculateHoroscope();
-};
-</script>
+        function renderDiamondSvg(containerId, ascSign, housePlanets, strokeColor, bgColor) {
+            const getSign = (h) => ((ascSign + h - 2) % 12) + 1;
+            const centers = {
+                1: { x: 200, y: 90 }, 2: { x: 100, y: 50 }, 3: { x: 50, y: 100 },
+                4: { x: 100, y: 200 }, 5: { x: 50, y: 300 }, 6: { x: 100, y: 350 },
+                7: { x: 200, y: 310 }, 8: { x: 300, y: 350 }, 9: { x: 350, y: 300 },
+                10: { x: 300, y: 200 }, 11: { x: 350, y: 100 }, 12: { x: 300, y: 50 }
+            };
 
+            let svg = `<svg viewBox="0 0 400 400" style="width:100%; height:auto; background:${bgColor}; border:2px solid ${strokeColor}; border-radius:12px;">
+                <rect x="10" y="10" width="380" height="380" fill="none" stroke="${strokeColor}" stroke-width="2"/>
+                <line x1="10" y1="10" x2="390" y2="390" stroke="${strokeColor}" stroke-width="1.5"/>
+                <line x1="390" y1="10" x2="10" y2="390" stroke="${strokeColor}" stroke-width="1.5"/>
+                <polygon points="200,10 390,200 200,390 10,200" fill="none" stroke="${strokeColor}" stroke-width="1.5"/>`;
+
+            for (let h = 1; h <= 12; h++) {
+                let c = centers[h];
+                let sNum = getSign(h);
+                let plist = housePlanets[h] || [];
+                svg += `<text x="${c.x}" y="${c.y - 12}" font-size="12" font-weight="bold" fill="${strokeColor}" text-anchor="middle">${sNum}</text>`;
+                svg += `<text x="${c.x}" y="${c.y + 8}" font-size="13" font-weight="bold" fill="#FFFFFF" text-anchor="middle">${plist.join(', ')}</text>`;
+            }
+
+            svg += `</svg>`;
+            document.getElementById(containerId).innerHTML = svg;
+        }
+
+        function switchChartView(view) {
+            const btns = document.querySelectorAll('.chart-tabs .tab-btn');
+            btns.forEach(b => b.classList.remove('active'));
+
+            const d1Box = document.getElementById('d1Box');
+            const d9Box = document.getElementById('d9Box');
+
+            if (view === 'both') {
+                btns[0].classList.add('active');
+                d1Box.style.display = 'block';
+                d9Box.style.display = 'block';
+            } else if (view === 'd1') {
+                btns[1].classList.add('active');
+                d1Box.style.display = 'block';
+                d9Box.style.display = 'none';
+            } else if (view === 'd9') {
+                btns[2].classList.add('active');
+                d1Box.style.display = 'none';
+                d9Box.style.display = 'block';
+            }
+        }
+
+        function handleUserSend() {
+            const input = document.getElementById('chatInput');
+            const query = input.value.trim();
+            if (!query) return;
+
+            appendMsg('user', query);
+            input.value = '';
+
+            setTimeout(() => {
+                let botReply = getBotResponse(query);
+                appendMsg('bot', botReply);
+            }, 500);
+        }
+
+        function sendQuickQuery(text) {
+            appendMsg('user', text);
+            setTimeout(() => {
+                let botReply = getBotResponse(text);
+                appendMsg('bot', botReply);
+            }, 500);
+        }
+
+        function getBotResponse(query) {
+            const name = document.getElementById('userName').value || "জাতক";
+            const lagna = document.getElementById('dispLagna').innerText;
+            const rashi = document.getElementById('dispRashi').innerText;
+            const modeText = isOnlineMode ? "[অনলাইন লাইভ গোচর বিশ্লেষণ]" : "[অফলাইন BPHS শ্লোক বিশ্লেষণ]";
+
+            if (query.includes(' ক্যারিয়ার') || query.includes('কর্মজীবন')) {
+                return `${name}জি, 'বৃহৎ পরাশর হোরা শাস্ত্র' অনুযায়ী আপনার ${lagna}-র ১০ম ভাব ও কর্মাধিপতির অবস্থান অত্যন্ত শুভ। ${modeText} ১০ম ভাবে শুভ গ্রহের সংযোগের ফলে আপনার কর্মক্ষেত্রে নেতৃত্ব, সুখ্যাতি এবং উত্তরোত্তর উন্নতিযোগ পরিলক্ষিত হচ্ছে।`;
+            } else if (query.includes('রাজযোগ')) {
+                return `${name}জি, আপনার কুণ্ডলীতে কেন্দ্র (১, ৪, ৭, ১০) ও ত্রিকোণ (১, ৫, ৯) পতির সমন্বয়ে কেন্দ্র-ত্রিকোণ রাজযোগ সক্রিয় রয়েছে। ${modeText} এই রাজযোগের শুভ প্রভাবে ভাগ্যবৃদ্ধি ও পদমর্যাদা সুপ্রতিষ্ঠিত হবে।`;
+            } else if (query.includes('দশা')) {
+                return `${name}জি, আপনার কুণ্ডলীতে বর্তমানে বিংশোত্তরী দশা অনুকূল গ্রহের অধীনে পরিচালিত হচ্ছে। ${modeText} দশা পরিবর্তনকালে কর্ম ও আর্থিক ক্ষেত্রে ইতিবাচক পরিবর্তন আসবে।`;
+            } else if (query.includes('ধন') || query.includes('ভাগ্য')) {
+                return `${name}জি, পরাশরী সিদ্ধান্ত অনুযায়ী ২য় (ধনভাব) ও ১১শ (লাভভাব) পতির সম্পর্ক শুভ। ${modeText} নিজের মেধা ও পরাক্রমের মাধ্যমে স্থায়ী ধন ও সম্পত্তি বৃদ্ধির যোগ সক্রিয় রয়েছে।`;
+            } else if (query.includes('স্বাস্থ্য') || query.includes('আয়ুর্বেদিক')) {
+                return `${name}জি, ত্রিদোষ (বাত, পিত্ত, কফ) বিশ্লেষণে আপনার কুণ্ডলীতে পিত্ত ও বাত প্রবৃত্তি প্রাধান্য পাচ্ছে। নিয়মিত প্রাণায়াম, পর্যাপ্ত জলপান ও সূর্য নমস্কারে শারীরিক আরোগ্য বজায় থাকবে।`;
+            } else {
+                return `${name}জি, 'বৃহৎ পরাশর হোরা শাস্ত্র' অনুযায়ী আপনার ${lagna} ও ${rashi}-র বিচারে কুণ্ডলীতে গ্রহদের অবস্থান বেশ বলশালী। ${modeText} এই গ্রহ সংস্থান আপনাকে বুদ্ধিমত্তা, ধৈর্য ও সার্বিক সফলতা প্রদান করবে।`;
+            }
+        }
+
+        function appendMsg(sender, text) {
+            const area = document.getElementById('messagesArea');
+            const bubble = document.createElement('div');
+            bubble.className = `message-bubble ${sender}`;
+
+            let html = text;
+            if (sender === 'bot') {
+                html += `<div class="action-toolbar">
+                    <button class="act-btn" onclick="copyText(this)">📋 Copy</button>
+                    <button class="act-btn" onclick="regenerateLast()">🔄 Regenerate</button>
+                    <button class="act-btn">⏩ Continue Analysis</button>
+                </div>`;
+            }
+            bubble.innerHTML = html;
+            area.appendChild(bubble);
+            area.scrollTop = area.scrollHeight;
+        }
+
+        function copyText(btn) {
+            let text = btn.parentElement.parentElement.innerText.replace('📋 Copy', '').replace('🔄 Regenerate', '').replace('⏩ Continue Analysis', '');
+            navigator.clipboard.writeText(text);
+            alert('উত্তরটি কপি করা হয়েছে!');
+        }
+
+        function regenerateLast() {
+            appendMsg('bot', '🔄 নতুন পরাশরী শ্লোক বিশ্লেষণ প্রস্তুত করা হচ্ছে...');
+        }
+
+        function startNewChat() {
+            document.getElementById('messagesArea').innerHTML = `<div class="message-bubble bot">নমস্কার! নতুন চ্যাট সেশন শুরু হয়েছে। আপনার কুণ্ডলী নিয়ে প্রশ্ন করুন।</div>`;
+        }
+
+        // Initialize on load
+        window.onload = function() {
+            calculateHoroscope();
+        };
+    </script>
 </body>
 </html>

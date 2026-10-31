@@ -1,1 +1,9 @@
-{"name": "astrologer-gouotam-suite", "version": "1.0.0", "private": true}
+{
+  "name": "astrologer-gouotam-ai-suite",
+  "version": "1.0.0",
+  "description": "BPHS AI Vedic Astrology Suite with D1 & D9 Visual Kundali Charts",
+  "main": "index.html",
+  "scripts": {
+    "start": "serve ."
+  }
+}
