@@ -1,1 +1,1 @@
-# Ayurvedic Engine
+"""Ayurvedic Astrology Engine"""
