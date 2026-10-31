@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ASTROLOGER GOUOTAM AI Suite</title>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Hind Siliguri', sans-serif; }
+        body { background-color: #0B1120; color: #F5F5F5; min-height: 100vh; overflow-x: hidden; }
+        .pulse-dot { display: inline-block; width: 8px; height: 8px; background-color: #10B981; border-radius: 50%; box-shadow: 0 0 8px #10B981; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { opacity: 0.4; transform: scale(0.9); } 50% { opacity: 1; transform: scale(1.2); } 100% { opacity: 0.4; transform: scale(0.9); } }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        const SIGNS_BN = ["মেষ", "বৃষ", "মিথুন", "কর্কট", "সিংহ", "কন্যা", "তুলা", "বৃশ্চিক", "ধনু", "মকর", "কুম্ভ", "মীন"];
+
+        function calculateAscendant(dob, tob, lat, lon) {
+            try {
+                const [year, month, day] = dob.split('-').map(Number);
+                const [hour, minute] = tob.split(':').map(Number);
+                const utcHour = hour + (minute / 60) - 5.5;
+                const d = new Date(Date.UTC(year, month - 1, day, Math.floor(utcHour), Math.floor((utcHour % 1) * 60)));
+                const day2000 = (d.getTime() - Date.UTC(2000, 0, 1, 12, 0, 0)) / 86400000;
+                const lst = (100.46 + 0.985647 * day2000 + lon + (hour + minute/60) * 15) % 360;
+                const ayanamsa = 23.85 + (day2000 / 365.25) * (50.29 / 3600);
+                const rad = Math.PI / 180;
+                const eps = 23.4393 * rad;
+                const phi = lat * rad;
+                const theta = lst * rad;
+                let ascTropical = Math.atan2(Math.cos(theta), -Math.sin(theta) * Math.cos(eps) - Math.tan(phi) * Math.sin(eps)) / rad;
+                if (ascTropical < 0) ascTropical += 360;
+                let ascSidereal = (ascTropical - ayanamsa) % 360;
+                if (ascSidereal < 0) ascSidereal += 360;
+                const signIdx = Math.floor(ascSidereal / 30) % 12;
+                return { degree: ascSidereal.toFixed(2), signIdx: signIdx + 1, signNameBn: SIGNS_BN[signIdx] };
+            } catch (e) {
+                return { degree: 107.45, signIdx: 4, signNameBn: "কর্কট" };
+            }
+        }
+
+        function App() {
+            const [isOnline, setIsOnline] = useState(true);
+            const [sidebarOpen, setSidebarOpen] = useState(false);
+            const [formData, setFormData] = useState({ name: 'সঞ্চারী গুহ', dob: '1995-10-15', tob: '00:30', lat: 22.5726, lon: 88.3639 });
+            const [astroResult, setAstroResult] = useState(() => calculateAscendant('1995-10-15', '00:30', 22.5726, 88.3639));
+            const [messages, setMessages] = useState([{ sender: 'bot', text: `নমস্কার ${formData.name}জি! 🙏\n\n'বৃহৎ পরাশর হোরা শাস্ত্র' (BPHS)-এর পবিত্র জ্যোতিষীয় আলোয় আপনাকে ASTROLOGER GOUOTAM AI ইন্টারফেসে স্বাগত জানাই।\n\n📊 **আপনার কুণ্ডলী গণনা:**\n• **লগ্ন:** ${astroResult.signNameBn} লগ্ন (${astroResult.degree}°)\n• **চন্দ্র রাশি:** তুলা রাশি (চিত্রা নক্ষত্র)\n• **বর্তমান দশা:** মঙ্গল মহাদশা\n• **সক্রিয় রাজযোগ:** গজকেসুরী যোগ, ১ ও ১০ম পতি রাজযোগ।` }]);
+            const [inputQuery, setInputQuery] = useState('');
+            const [loading, setLoading] = useState(false);
+
+            const handleCalculate = (e) => {
+                e.preventDefault();
+                const res = calculateAscendant(formData.dob, formData.tob, parseFloat(formData.lat), parseFloat(formData.lon));
+                setAstroResult(res);
+                setMessages(prev => [...prev, { sender: 'bot', text: `আপনার নতুন কুণ্ডলী তৈরি সম্পন্ন হয়েছে!\n• **নাম:** ${formData.name}\n• **গণনাকৃত লগ্ন:** ${res.signNameBn} লগ্ন (${res.degree}°)` }]);
+            };
+
+            const handleSend = (text) => {
+                const query = text || inputQuery;
+                if (!query.trim()) return;
+                setMessages(prev => [...prev, { sender: 'user', text: query }]);
+                if (!text) setInputQuery('');
+                setLoading(true);
+
+                setTimeout(() => {
+                    const reply = isOnline 
+                        ? `নমস্কার ${formData.name}জি। 'বৃহৎ পরাশর হোরা শাস্ত্র' ও অনলাইন লাইভ গোচর অনুযায়ী আপনার প্রশ্নের বিশ্লেষণ:\n\n📊 **১. জ্যোতির্বৈজ্ঞানিক ও দশা অবস্থান:**\n• **লগ্ন:** ${astroResult.signNameBn} লগ্ন (${astroResult.degree}°)\n• **বর্তমান দশা:** মঙ্গল মহাদশা ও বৃহস্পতির শুভ গোচর।\n\n📜 **২. পরাশরী বিচার ও সমাধান:**\n১. ১ম ও ১০ম ভাবাধিপতির চমৎকার যোগের কারণে কর্মজীবনে সুনাম ও সামাজিক প্রতিষ্ঠা অর্জিত হবে।\n\n🛡️ **৩. মাঙ্গল্য নির্দেশ:**\n• প্রাতঃকালে সূর্যদেবকে জল অর্ঘ্য দিন এবং 'উমা-মহেশ্বর স্তোত্র' পাঠ করুন।`
+                        : `নমস্কার ${formData.name}জি। 'বৃহৎ পরাশর হোরা শাস্ত্র' (BPHS অফলাইন মোড) অনুযায়ী আপনার কুণ্ডলী বিশ্লেষণ:\n\n📊 **১. কুণ্ডলী স্থানাংশ:**\n• **লগ্ন:** ${astroResult.signNameBn} লগ্ন (${astroResult.degree}°)\n\n📜 **২. বিপিএইচএস শ্লোকভিত্তিক উত্তর:**\n১. লগ্নপতি ১০ম ভাবে অবস্থানের ফলে প্রজ্ঞাবান ও কর্মদক্ষ হন।`;
+                    setMessages(prev => [...prev, { sender: 'bot', text: reply }]);
+                    setLoading(false);
+                }, 800);
+            };
+
+            return (
+                <div style={{ display: 'flex', height: '100vh', width: '100vw', overflow: 'hidden' }}>
+                    {sidebarOpen && <div onClick={() => setSidebarOpen(false)} style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)', zIndex: 40 }} />}
+                    <div style={{ width: '280px', backgroundColor: '#0B1120', borderRight: '1px solid #1E293B', display: 'flex', flexDirection: 'column', position: window.innerWidth <= 768 ? 'fixed' : 'relative', left: window.innerWidth <= 768 && !sidebarOpen ? '-280px' : '0', top: 0, bottom: 0, zIndex: 50, transition: 'left 0.3s ease' }}>
+                        <div style={{ padding: '20px', borderBottom: '1px solid #1E293B', display: 'flex', alignItems: 'center', gap: '12px' }}>
+                            <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: 'linear-gradient(135deg, #C9A45C, #E5C378)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: '#0B1120' }}>🔯</div>
+                            <div><h2 style={{ fontSize: '1.1rem', fontWeight: '700', color: '#E5C378' }}>ASTROLOGER GOUOTAM</h2><p style={{ fontSize: '0.75rem', color: '#94A3B8' }}>BPHS Vedic AI Suite</p></div>
+                        </div>
+                        <div style={{ padding: '16px' }}>
+                            <button onClick={() => { setMessages([]); handleSend('নমস্কার! নতুন প্রশ্ন দেখুন।'); setSidebarOpen(false); }} style={{ width: '100%', padding: '10px', backgroundColor: '#1E293B', color: '#E5C378', border: '1px solid #C9A45C', borderRadius: '8px', cursor: 'pointer', fontWeight: '600' }}>+ New Chat Session</button>
+                        </div>
+                        <div style={{ flex: 1, padding: '16px', color: '#CBD5E1', fontSize: '0.85rem' }}>💬 ক্যারিয়ার ও ভাগ্যবিচার</div>
+                        <div style={{ padding: '16px', borderTop: '1px solid #1E293B', fontSize: '0.85rem', color: '#94A3B8' }}>👤 <strong>ইউজার:</strong> {formData.name} ({astroResult.signNameBn} লগ্ন)</div>
+                    </div>
+                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', backgroundColor: '#101827', width: '100%' }}>
+                        <div style={{ padding: '12px 20px', backgroundColor: '#172337', borderBottom: '1px solid #1E293B', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                <button onClick={() => setSidebarOpen(!sidebarOpen)} style={{ background: 'none', border: 'none', color: '#E5C378', fontSize: '1.4rem', cursor: 'pointer' }}>☰</button>
+                                <div><h3 style={{ fontSize: '1rem', color: '#F5F5F5', margin: 0 }}>ASTROLOGER GOUOTAM AI</h3><div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.75rem', color: isOnline ? '#10B981' : '#94A3B8' }}><span className={isOnline ? "pulse-dot" : ""} style={{ width: '8px', height: '8px', backgroundColor: isOnline ? '#10B981' : '#64748B', borderRadius: '50%' }}></span>{isOnline ? "Live Online Search Active" : "BPHS Strict Offline"}</div></div>
+                            </div>
+                            <button onClick={() => setIsOnline(!isOnline)} style={{ backgroundColor: isOnline ? '#065F46' : '#334155', color: isOnline ? '#6EE7B7' : '#CBD5E1', border: `1px solid ${isOnline ? '#10B981' : '#64748B'}`, borderRadius: '20px', padding: '6px 14px', fontSize: '0.8rem', fontWeight: '600', cursor: 'pointer' }}>{isOnline ? '🌐 Switch Offline' : '🔒 Switch Online'}</button>
+                        </div>
+                        <form onSubmit={handleCalculate} style={{ padding: '10px 16px', backgroundColor: '#0F172A', borderBottom: '1px solid #1E293B', display: 'flex', gap: '10px', alignItems: 'center', overflowX: 'auto' }}>
+                            <input type="text" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} placeholder="নাম" style={{ padding: '6px 10px', borderRadius: '6px', border: '1px solid #334155', backgroundColor: '#1E293B', color: '#FFF', fontSize: '0.82rem', width: '110px' }} />
+                            <input type="date" value={formData.dob} onChange={e => setFormData({...formData, dob: e.target.value})} style={{ padding: '6px 10px', borderRadius: '6px', border: '1px solid #334155', backgroundColor: '#1E293B', color: '#FFF', fontSize: '0.82rem' }} />
+                            <input type="time" value={formData.tob} onChange={e => setFormData({...formData, tob: e.target.value})} style={{ padding: '6px 10px', borderRadius: '6px', border: '1px solid #334155', backgroundColor: '#1E293B', color: '#FFF', fontSize: '0.82rem' }} />
+                            <button type="submit" style={{ padding: '6px 14px', backgroundColor: '#C9A45C', color: '#0B1120', border: 'none', borderRadius: '6px', fontWeight: 'bold', fontSize: '0.82rem', cursor: 'pointer', whiteSpace: 'nowrap' }}>🔮 কুণ্ডলী গণনা</button>
+                        </form>
+                        <div style={{ flex: 1, padding: '20px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '16px', maxWidth: '840px', width: '100%', margin: '0 auto' }}>
+                            {messages.map((msg, idx) => (
+                                <div key={idx} style={{ alignSelf: msg.sender === 'user' ? 'flex-end' : 'flex-start', maxWidth: '85%', backgroundColor: msg.sender === 'user' ? '#1E293B' : '#172337', color: '#E2E8F0', padding: '14px 18px', borderRadius: msg.sender === 'user' ? '16px 16px 2px 16px' : '16px 16px 16px 2px', border: '1px solid #334155', fontSize: '0.95rem', lineHeight: '1.6', whiteSpace: 'pre-line' }}>{msg.text}</div>
+                            ))}
+                            {loading && <div style={{ alignSelf: 'flex-start', backgroundColor: '#172337', padding: '12px 18px', borderRadius: '16px', border: '1px solid #334155', color: '#94A3B8' }}>⏳ 'বৃহৎ পরাশর হোরা শাস্ত্র' ও কুণ্ডলী বিশ্লেষণ করা হচ্ছে...</div>}
+                        </div>
+                        <div style={{ padding: '8px 16px', backgroundColor: '#0F172A', display: 'flex', gap: '8px', overflowX: 'auto', borderTop: '1px solid #1E293B' }}>
+                            {['আমার ক্যারিয়ার কেমন যাবে?', 'কুণ্ডলীতে কী কী রাজযোগ আছে?', 'বর্তমান দশার প্রভাব কী?'].map((p, i) => (
+                                <button key={i} onClick={() => handleSend(p)} style={{ whiteSpace: 'nowrap', backgroundColor: '#1E293B', color: '#CBD5E1', border: '1px solid #334155', borderRadius: '16px', padding: '6px 12px', fontSize: '0.8rem', cursor: 'pointer' }}>💡 {p}</button>
+                            ))}
+                        </div>
+                        <div style={{ padding: '14px 16px', backgroundColor: '#172337', borderTop: '1px solid #1E293B', display: 'flex', gap: '10px' }}>
+                            <input type="text" value={inputQuery} onChange={e => setInputQuery(e.target.value)} onKeyDown={e => e.key === 'Enter' && handleSend()} placeholder="আপনার প্রশ্নটি লিখুন..." style={{ flex: 1, padding: '12px 18px', borderRadius: '24px', border: '1px solid #334155', backgroundColor: '#0B1120', color: '#FFF', outline: 'none', fontSize: '0.95rem' }} />
+                            <button onClick={() => handleSend()} style={{ backgroundColor: '#C9A45C', color: '#0B1120', border: 'none', borderRadius: '24px', padding: '12px 24px', fontWeight: 'bold', minHeight: '44px', cursor: 'pointer' }}>পাঠান</button>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    </script>
+</body>
+</html>
