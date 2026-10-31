@@ -1,9 +1,1 @@
-{
-  "name": "astrologer-gouotam-ai",
-  "version": "4.0.0",
-  "description": "ASTROLOGER GOUOTAM AI Complete Vedic & Ayurvedic Astrology Suite",
-  "main": "index.html",
-  "scripts": {
-    "start": "serve ."
-  }
-}
+{"name": "astrologer-gouotam-suite", "version": "1.0.0", "private": true}

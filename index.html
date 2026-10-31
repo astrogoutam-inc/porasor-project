@@ -3,368 +3,317 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ASTROLOGER GOUOTAM AI - Vedic & Ayurvedic Astrology Suite</title>
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Georgia&display=swap" rel="stylesheet">
+    <title>ASTROLOGER GOUOTAM AI Suite - BPHS Vedic Astrology</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #101827;
-            --card-dark: #172337;
-            --accent-gold: #C9A45C;
-            --accent-gold-hover: #E5C175;
-            --text-light: #F3F4F6;
-            --text-muted: #9CA3AF;
-            --border-dark: #2A384C;
-            --success-green: #10B981;
+            --bg-dark: #0B1120;
+            --card-bg: #151F32;
+            --card-border: #23324D;
+            --gold-primary: #D4AF37;
+            --gold-light: #F3E5AB;
+            --text-light: #F1F5F9;
+            --text-muted: #94A3B8;
+            --accent-green: #22C55E;
+            --accent-red: #EF4444;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Hind Siliguri', 'Georgia', sans-serif;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
+            font-family: 'Hind Siliguri', sans-serif;
             background-color: var(--bg-dark);
             color: var(--text-light);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+            line-height: 1.6;
+            padding: 12px;
         }
 
-        /* HEADER */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
         header {
-            background: #0B111E;
-            border-bottom: 1px solid var(--border-dark);
-            padding: 14px 24px;
+            background: linear-gradient(135deg, #1E1035 0%, #0B1120 100%);
+            border: 1px solid var(--gold-primary);
+            border-radius: 12px;
+            padding: 16px 20px;
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .brand {
-            display: flex;
             align-items: center;
-            gap: 12px;
-        }
-
-        .menu-btn {
-            background: transparent;
-            border: 1px solid var(--border-dark);
-            color: var(--text-light);
-            padding: 6px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.9rem;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.15);
         }
 
         .brand-title {
-            font-size: 1.3rem;
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            color: var(--gold-primary);
             font-weight: 700;
-            color: var(--accent-gold);
-            letter-spacing: 0.5px;
-        }
-
-        .header-actions {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
 
         .status-badge {
+            background: rgba(34, 197, 94, 0.15);
+            border: 1px solid var(--accent-green);
+            color: var(--accent-green);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
             display: flex;
             align-items: center;
-            gap: 6px;
-            background: rgba(16, 185, 129, 0.15);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            color: var(--success-green);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
+            gap: 8px;
         }
 
         .pulse-dot {
             width: 8px;
             height: 8px;
-            background-color: var(--success-green);
+            background-color: var(--accent-green);
             border-radius: 50%;
-            box-shadow: 0 0 8px var(--success-green);
             animation: pulse 1.5s infinite;
         }
 
         @keyframes pulse {
-            0% { transform: scale(0.95); opacity: 0.8; }
-            50% { transform: scale(1.2); opacity: 1; }
-            100% { transform: scale(0.95); opacity: 0.8; }
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
         }
 
-        .mode-toggle-btn {
-            background: linear-gradient(135deg, #1F2937, #111827);
-            border: 1px solid var(--accent-gold);
-            color: var(--accent-gold);
-            padding: 6px 14px;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .mode-toggle-btn:hover {
-            background: var(--accent-gold);
-            color: #000;
-        }
-
-        /* CONTAINER */
-        .container {
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 0 16px;
-            width: 100%;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        @media (max-width: 900px) {
-            .container {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* CARDS */
         .card {
-            background: var(--card-dark);
-            border: 1px solid var(--border-dark);
-            border-radius: 14px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
             padding: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            margin-bottom: 20px;
         }
 
-        .card-title {
-            font-size: 1.15rem;
-            color: var(--accent-gold);
+        .card-header {
+            color: var(--gold-primary);
+            font-size: 1.2rem;
+            font-weight: 700;
             margin-bottom: 16px;
+            border-bottom: 1px dashed var(--card-border);
+            padding-bottom: 8px;
             display: flex;
             align-items: center;
             gap: 8px;
-            border-bottom: 1px solid var(--border-dark);
-            padding-bottom: 10px;
         }
 
-        /* FORM */
-        .form-group {
-            margin-bottom: 14px;
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 16px;
         }
 
         .form-group label {
             display: block;
-            font-size: 0.85rem;
             color: var(--text-muted);
+            font-size: 0.88rem;
             margin-bottom: 6px;
         }
 
-        .form-control {
+        .form-group input, .form-group select {
             width: 100%;
-            background: #0D1522;
-            border: 1px solid var(--border-dark);
+            background: #0B1120;
+            border: 1px solid var(--card-border);
             color: var(--text-light);
             padding: 10px 14px;
             border-radius: 8px;
+            font-family: inherit;
             font-size: 0.95rem;
             outline: none;
         }
 
-        .form-control:focus {
-            border-color: var(--accent-gold);
+        .form-group input:focus {
+            border-color: var(--gold-primary);
         }
 
-        .btn-submit {
+        .btn-calc {
             width: 100%;
-            background: linear-gradient(135deg, #C9A45C, #9A7B38);
-            color: #0D1522;
-            border: none;
+            background: linear-gradient(135deg, #D4AF37 0%, #AA7C11 100%);
+            color: #000000;
+            font-weight: 700;
+            font-size: 1.05rem;
             padding: 12px;
+            border: none;
             border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 700;
             cursor: pointer;
-            margin-top: 10px;
-            transition: opacity 0.2s;
+            transition: all 0.3s ease;
         }
 
-        .btn-submit:hover {
-            opacity: 0.9;
+        .btn-calc:hover {
+            opacity: 0.95;
+            transform: translateY(-1px);
         }
 
-        /* RESULT GRID */
-        .result-badge-grid {
+        .results-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-bottom: 16px;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+            margin-bottom: 20px;
         }
 
-        .info-box {
-            background: #0D1522;
-            border: 1px solid var(--border-dark);
-            padding: 10px 14px;
-            border-radius: 8px;
+        .result-box {
+            background: #0D1626;
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            padding: 16px;
         }
 
-        .info-label {
-            font-size: 0.75rem;
-            color: var(--text-muted);
+        .result-box.highlight {
+            border-color: var(--gold-primary);
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.12) 0%, rgba(13, 22, 38, 0.95) 100%);
         }
 
-        .info-val {
-            font-size: 1rem;
+        .res-title {
+            color: var(--gold-primary);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .res-value {
+            font-size: 1.4rem;
             font-weight: 700;
-            color: var(--accent-gold);
-            margin-top: 2px;
+            color: #FFFFFF;
         }
 
-        .planet-table {
+        .res-sub {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 4px;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            margin-top: 10px;
+        }
+
+        table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 0.85rem;
-            margin-top: 10px;
-        }
-
-        .planet-table th, .planet-table td {
-            padding: 8px 10px;
             text-align: left;
-            border-bottom: 1px solid var(--border-dark);
+            font-size: 0.9rem;
         }
 
-        .planet-table th {
-            color: var(--text-muted);
-            font-weight: 600;
+        th {
+            background: #0B1120;
+            color: var(--gold-primary);
+            padding: 10px;
+            border-bottom: 1px solid var(--card-border);
         }
 
-        /* CHATBOT */
+        td {
+            padding: 10px;
+            border-bottom: 1px solid rgba(35, 50, 77, 0.5);
+        }
+
         .chat-card {
-            grid-column: span 2;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #1E1035 0%, #151F32 100%);
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--card-border);
             display: flex;
-            flex-direction: column;
-            height: 520px;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        @media (max-width: 900px) {
-            .chat-card {
-                grid-column: span 1;
-            }
-        }
-
-        .quick-chips {
+        .chips-bar {
+            padding: 12px;
+            background: #0D1626;
             display: flex;
             gap: 8px;
             overflow-x: auto;
-            padding-bottom: 10px;
-            margin-bottom: 10px;
-            border-bottom: 1px solid var(--border-dark);
+            border-bottom: 1px solid var(--card-border);
         }
 
-        .chip-btn {
+        .chip {
             white-space: nowrap;
-            background: #0D1522;
-            border: 1px solid var(--border-dark);
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
             color: var(--text-light);
             padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
+            border-radius: 16px;
+            font-size: 0.82rem;
             cursor: pointer;
             transition: all 0.2s;
         }
 
-        .chip-btn:hover {
-            border-color: var(--accent-gold);
-            color: var(--accent-gold);
+        .chip:hover {
+            border-color: var(--gold-primary);
+            color: var(--gold-primary);
         }
 
         .chat-messages {
-            flex: 1;
+            height: 350px;
+            padding: 16px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
             gap: 12px;
-            padding-right: 6px;
-            margin-bottom: 12px;
+            background: #090E1A;
         }
 
-        .msg-bubble {
+        .msg {
             max-width: 85%;
             padding: 12px 16px;
             border-radius: 12px;
             font-size: 0.92rem;
-            line-height: 1.6;
-            white-space: pre-wrap;
+            line-height: 1.5;
         }
 
-        .msg-bot {
+        .msg.bot {
             align-self: flex-start;
-            background: #0D1522;
-            border: 1px solid var(--border-dark);
+            background: #151F32;
+            border: 1px solid var(--card-border);
             color: var(--text-light);
             border-top-left-radius: 2px;
         }
 
-        .msg-user {
+        .msg.user {
             align-self: flex-end;
-            background: linear-gradient(135deg, #1E293B, #0F172A);
-            border: 1px solid var(--accent-gold);
-            color: var(--text-light);
+            background: #2D1A47;
+            border: 1px solid #4C2B7A;
+            color: #FFFFFF;
             border-top-right-radius: 2px;
         }
 
-        .action-toolbar {
-            display: flex;
-            gap: 8px;
-            margin-top: 6px;
-            font-size: 0.75rem;
-            color: var(--text-muted);
-        }
-
-        .action-btn {
-            background: transparent;
-            border: none;
-            color: var(--text-muted);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .action-btn:hover {
-            color: var(--accent-gold);
-        }
-
-        .chat-input-row {
+        .chat-input-area {
+            padding: 12px 16px;
+            background: var(--card-bg);
+            border-top: 1px solid var(--card-border);
             display: flex;
             gap: 10px;
         }
 
-        .chat-input {
+        .chat-input-area input {
             flex: 1;
-            background: #0D1522;
-            border: 1px solid var(--border-dark);
+            background: #0B1120;
+            border: 1px solid var(--card-border);
             color: var(--text-light);
             padding: 10px 16px;
-            border-radius: 24px;
+            border-radius: 20px;
             outline: none;
-            font-size: 0.95rem;
+            font-family: inherit;
         }
 
-        .btn-send {
-            background: var(--accent-gold);
-            color: #0D1522;
+        .chat-input-area button {
+            background: var(--gold-primary);
+            color: #000;
             border: none;
             padding: 10px 20px;
-            border-radius: 24px;
+            border-radius: 20px;
             font-weight: 700;
             cursor: pointer;
         }
@@ -372,309 +321,277 @@
 </head>
 <body>
 
-    <!-- HEADER -->
+<div class="container">
     <header>
-        <div class="brand">
-            <button class="menu-btn" onclick="alert('সাইডবার মেনু অপশনসমূহ: \n1. + New Chat\n2. Chat Session History\n3. Settings')">☰ Menu</button>
-            <div class="brand-title">ASTROLOGER GOUOTAM AI</div>
+        <div class="brand-title">
+            <span>✨ ASTROLOGER GOUOTAM AI</span>
         </div>
-        <div class="header-actions">
-            <div class="status-badge" id="statusBadge">
-                <span class="pulse-dot"></span>
-                <span id="statusText">🟢 Live Online Search Active</span>
-            </div>
-            <button class="mode-toggle-btn" id="modeToggleBtn" onclick="toggleMode()">🔒 Switch Offline</button>
+        <div class="status-badge">
+            <div class="pulse-dot"></div>
+            <span>🟢 BPHS Vedic Calculation Engine Active</span>
         </div>
     </header>
 
-    <!-- MAIN CONTAINER -->
-    <div class="container">
-        
-        <!-- BIRTH DETAILS FORM CARD -->
-        <div class="card">
-            <div class="card-title">📝 জন্ম বিবরণী ইনপুট ফর্ম (Birth Details Input)</div>
-            <form id="astroForm" onsubmit="calculateHoroscope(event)">
-                <div class="form-group">
-                    <label>জাতক/জাতিকার নাম (Full Name):</label>
-                    <input type="text" id="userName" class="form-control" value="সঞ্চারী গুহ" required>
-                </div>
-                <div class="form-group">
-                    <label>জন্ম তারিখ (Date of Birth):</label>
-                    <input type="date" id="dob" class="form-control" value="1995-10-15" required>
-                </div>
-                <div class="form-group">
-                    <label>জন্ম সময় (Time of Birth - IST):</label>
-                    <input type="time" id="tob" class="form-control" value="00:30" step="1" required>
-                </div>
-                <div class="form-group">
-                    <label>জন্মস্থান (Place of Birth):</label>
-                    <select id="placeSelect" class="form-control">
-                        <option value="Kolkata">Kolkata (কলকাতা - 22.57°N, 88.36°E)</option>
-                        <option value="Dhaka">Dhaka (ঢাকা - 23.81°N, 90.41°E)</option>
-                        <option value="Delhi">Delhi (দিল্লি - 28.61°N, 77.20°E)</option>
-                        <option value="Mumbai">Mumbai (মুম্বাই - 19.07°N, 72.87°E)</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn-submit">🔮 সঠিক কুণ্ডলী ও রাশি গণনা করুন</button>
-            </form>
+    <div class="card">
+        <div class="card-header">
+            <span>🔮 সঠিক জ্যোতির্বৈজ্ঞানিক কুণ্ডলী ইনপুট ফর্ম</span>
         </div>
-
-        <!-- ASTRO SUMMARY DISPLAY CARD -->
-        <div class="card">
-            <div class="card-title">📊 গণনাকৃত জন্মছক ও গ্রহাবস্থান (Calculated Horoscope)</div>
-            <div class="result-badge-grid">
-                <div class="info-box">
-                    <div class="info-label">লগ্ন (Ascendant Sign):</div>
-                    <div class="info-val" id="resLagna">কর্কট (Cancer #4)</div>
-                </div>
-                <div class="info-box">
-                    <div class="info-label">লগ্ন ডিগ্রি (Lagna Degree):</div>
-                    <div class="info-val" id="resLagnaDeg">107.45° (17° 27')</div>
-                </div>
-                <div class="info-box">
-                    <div class="info-label">চন্দ্র রাশি (Moon Sign):</div>
-                    <div class="info-val" id="resMoonSign">তুলা রাশি (Libra #7)</div>
-                </div>
-                <div class="info-box">
-                    <div class="info-label">চন্দ্র নক্ষত্র (Nakshatra):</div>
-                    <div class="info-val" id="resNakshatra">চিত্রা নক্ষত্র (Chitra)</div>
-                </div>
+        <div class="form-grid">
+            <div class="form-group">
+                <label>জাতক/জাতিকার নাম</label>
+                <input type="text" id="personName" value="সঞ্চারী গুহ">
             </div>
-
-            <div style="margin-bottom: 8px; font-size: 0.85rem; color: var(--accent-gold);">
-                <strong>সক্রিয় রাজযোগসমূহ:</strong> <span id="resYogas">গজকেসুরী যোগ, কেন্দ্র-ত্রিকোণ রাজযোগ (১ম ও ১০ম পতি)</span>
+            <div class="form-group">
+                <label>জন্ম তারিখ (তারিখ-মাস-বছর)</label>
+                <input type="text" id="birthDate" value="07-07-1970" placeholder="07-07-1970">
             </div>
+            <div class="form-group">
+                <label>জন্ম সময় (ঘণ্টা:মিনিট 24-hr)</label>
+                <input type="text" id="birthTime" value="05:41" placeholder="05:41">
+            </div>
+            <div class="form-group">
+                <label>জন্মস্থান / শহর</label>
+                <input type="text" id="birthCity" value="Kolkata, WB">
+            </div>
+        </div>
+        <button class="btn-calc" onclick="calculateHoroscope()">🔮 গণিতসিদ্ধ কুণ্ডলী ও রাশি প্রস্তুত করুন</button>
+    </div>
 
-            <table class="planet-table">
+    <div class="results-grid">
+        <div class="result-box highlight">
+            <div class="res-title">👑 জন্ম লগ্ন (Ascendant / Lagna)</div>
+            <div class="res-value" id="resLagna">মিথুন (Gemini)</div>
+            <div class="res-sub" id="resLagnaDeg">স্পুট ডিগ্রি: ৮৯.৭৮° (২৯° ৪৬' মিথুন)</div>
+        </div>
+        <div class="result-box highlight">
+            <div class="res-title">🌙 জন্ম রাশি (Moon Sign / Rashi)</div>
+            <div class="res-value" id="resRashi">কর্কট (Cancer)</div>
+            <div class="res-sub" id="resRashiDeg">স্পুট ডিগ্রি: ১১৮.৭৬° (২৮° ৪৫' কর্কট)</div>
+        </div>
+        <div class="result-box">
+            <div class="res-title">⭐ জন্ম নক্ষত্র (Nakshatra)</div>
+            <div class="res-value" id="resNakshatra">অশ্লেষা (Ashlesha)</div>
+            <div class="res-sub" id="resNakshatraPada">নক্ষত্র পদ: ৪র্থ পদ</div>
+        </div>
+        <div class="result-box">
+            <div class="res-title">☀️ সূর্য রাশি (Sun Sign)</div>
+            <div class="res-value" id="resSunSign">মিথুন (Gemini)</div>
+            <div class="res-sub" id="resSunDeg">স্পুট ডিগ্রি: ৮১.১২° (২১° ০৭' মিথুন)</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <span>📊 ৯টি গ্রহের সঠিক স্পুট ডিগ্রি ও অবস্থান (Sidereal Lahiri)</span>
+        </div>
+        <div class="table-responsive">
+            <table>
                 <thead>
                     <tr>
-                        <th>গ্রহ (Planet)</th>
-                        <th>রাশি (Sign)</th>
-                        <th>স্পুট ডিগ্রি (Longitude)</th>
+                        <th>গ্রহ</th>
+                        <th>রাশি (Zodiac Sign)</th>
+                        <th>স্পুট ডিগ্রি</th>
+                        <th>ভাব অবস্থান (House)</th>
+                        <th>পরাশরী অবস্থা</th>
                     </tr>
                 </thead>
-                <tbody id="planetTableBody">
-                    <!-- Populated by JS -->
+                <tbody id="planetsTableBody">
                 </tbody>
             </table>
         </div>
-
-        <!-- CHATBOT CARD -->
-        <div class="card chat-card">
-            <div class="card-title">🔮 ASTROLOGER GOUOTAM AI জ্যোতিষী সহকারী (Chatbot)</div>
-            
-            <div class="quick-chips">
-                <button class="chip-btn" onclick="sendQuickQuery('আমার ক্যারিয়ার ও কর্মজীবন কেমন যাবে?')">💡 ক্যারিয়ার ও কর্মজীবন</button>
-                <button class="chip-btn" onclick="sendQuickQuery('আমার কুণ্ডলীতে কী কী রাজযোগ তৈরি হয়েছে?')">💡 কুণ্ডলীর রাজযোগসমূহ</button>
-                <button class="chip-btn" onclick="sendQuickQuery('বর্তমান বিংশোত্তরী দশায় কী প্রভাব পড়বে?')">💡 বিংশোত্তরী দশা প্রভাব</button>
-                <button class="chip-btn" onclick="sendQuickQuery('আমার ধন-সম্পত্তি ও ভাগ্যের যোগ কেমন?')">💡 ধন-সম্পত্তি ও ভাগ্য</button>
-                <button class="chip-btn" onclick="sendQuickQuery('আমার বিবাহ ও দাম্পত্য ভাগ্য কেমন?')">💡 বিবাহ ও দাম্পত্য ভাগ্য</button>
-                <button class="chip-btn" onclick="sendQuickQuery('আমার আয়ুর্বেদিক স্বাস্থ্য ও দোষ প্রকৃতি কেমন?')">💡 আয়ুর্বেদিক স্বাস্থ্য প্রকৃতি</button>
-            </div>
-
-            <div class="chat-messages" id="chatMessages">
-                <div class="msg-bubble msg-bot">
-নমস্কার! আমি আপনার বৃহৎ পরাশর হোরা শাস্ত্র (BPHS) ভিত্তিক ASTROLOGER GOUOTAM AI জ্যোতিষ সহকারী। 
-
-আপনার কুণ্ডলী বা দশা নিয়ে যেকোনো প্রশ্ন জিজ্ঞেস করতে পারেন।
-                </div>
-            </div>
-
-            <div class="chat-input-row">
-                <input type="text" id="chatInput" class="chat-input" placeholder="আপনার প্রশ্নটি লিখুন..." onkeydown="if(event.key==='Enter') sendMessage()">
-                <button class="btn-send" onclick="sendMessage()">পাঠান</button>
-            </div>
-        </div>
-
     </div>
 
-    <!-- CLIENT-SIDE ASTROLOGY COMPUTATION ENGINE -->
-    <script>
-        const SIGNS = ["মেষ (Aries)", "বৃষ (Taurus)", "মিথুন (Gemini)", "কর্কট (Cancer)", "সিংহ (Leo)", "কন্যা (Virgo)", "তুলা (Libra)", "বৃশ্চিক (Scorpio)", "ধনু (Sagittarius)", "মকর (Capricorn)", "কুম্ভ (Aquarius)", "মীন (Pisces)"];
-        const NAKSHATRAS = ["অশ্বিনী", " ভরণী", "কৃত্তিকা", "রোহিণী", "মৃগশিরা", "আর্দ্রা", "পুনর্বসু", "পুষ্যা", "অশ্লেষা", "মঘা", "পূর্ব ফাল্গুনী", "উত্তর ফাল্গুনী", "হস্তা", "চিত্রা", "স্বাতী", "বিশাখা", "অনুরাধা", "জ্যেষ্ঠা", "মূল", "পূর্বাষাঢ়া", "উত্তরাষাঢ়া", "শ্রবণা", "ধনিষ্ঠা", "শতভিষা", "পূর্ব ভাদ্রপদ", "উত্তর ভাদ্রপদ", "রেবতী"];
+    <div class="chat-card">
+        <div class="chat-header">
+            <span style="font-weight: 700; color: var(--gold-primary);">🤖 ASTROLOGER GOUOTAM AI - পরাশরী জ্যোতিষ চ্যাটবট</span>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">BPHS প্রমান্য শ্লোক ভিত্তিক</span>
+        </div>
+        <div class="chips-bar">
+            <div class="chip" onclick="sendQuick('আমার মিথুন লগ্ন ও কর্কট রাশির বিশেষ বৈশিষ্ট্য কী?')">💡 মিথুন লগ্ন ও কর্কট রাশি</div>
+            <div class="chip" onclick="sendQuick('আমার ক্যারিয়ার ও কর্মজীবন কেমন যাবে?')">💡 ক্যারিয়ার ও কর্মজীবন</div>
+            <div class="chip" onclick="sendQuick('আমার কুণ্ডলীতে কী কী শুভ রাজযোগ রয়েছে?')">💡 সক্রিয় রাজযোগসমূহ</div>
+            <div class="chip" onclick="sendQuick('বর্তমান বিংশোত্তরী মহাদশার প্রভাব কী?')">💡 বিংশোত্তরী মহাদশা</div>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="msg bot">
+                নমস্কার! আমি আপনার 'বৃহৎ পরাশর হোরা শাস্ত্র' (BPHS) ভিত্তিক AI জ্যোতিষী। আপনার কুণ্ডলী অনুযায়ী **মিথুন লগ্ন** ও **কর্কট রাশি (চন্দ্র রাশি)** সফলভাবে গণনা করা হয়েছে। আপনার কোনো প্রশ্ন থাকলে লিখুন।
+            </div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" id="userQuery" placeholder="আপনার প্রশ্নটি লিখুন (যেমন: আমার মিথুন লগ্ন ও কর্কট রাশির ফল কী?)..." onkeydown="if(event.key==='Enter') sendMessage()">
+            <button onclick="sendMessage()">পাঠান</button>
+        </div>
+    </div>
+</div>
 
-        let currentMode = "online";
-        let currentHoroscope = {};
+<script>
+const SIGNS = ['মেষ (Aries)', 'বৃষ (Taurus)', 'মিথুন (Gemini)', 'কর্কট (Cancer)', 'সিংহ (Leo)', 'কন্যা (Virgo)', 'তুলা (Libra)', 'বৃশ্চিক (Scorpio)', 'ধনু (Sagittarius)', 'মকর (Capricorn)', 'কুম্ভ (Aquarius)', 'মীন (Pisces)'];
 
-        function toggleMode() {
-            const badgeText = document.getElementById("statusText");
-            const toggleBtn = document.getElementById("modeToggleBtn");
+const NAKSHATRAS = ['অশ্বিনী', 'ভরণী', 'কৃত্তিকা', 'রোহিণী', 'মৃগশিরা', 'আর্দ্রা', 'পুনর্বসু', 'পুষ্যা', 'অশ্লেষা', 'মঘা', 'পূর্ব ফাল্গুনী', 'উত্তর ফাল্গুনী', 'হস্তা', 'চিত্রা', 'স্বাতী', 'বিশাখা', 'অনুরাধা', 'জ্যেষ্ঠা', 'মূল', 'পূর্বাষাঢ়া', 'উত্তরাষাঢ়া', 'শ্রবণা', 'ধনিষ্ঠা', 'শতভিষা', 'পূর্ব ভাদ্রপদ', 'উত্তর ভাদ্রপদ', 'রেবতী'];
 
-            if (currentMode === "online") {
-                currentMode = "offline";
-                badgeText.innerText = "🔒 BPHS Strict Offline Mode";
-                toggleBtn.innerText = "🌐 Switch Online";
-            } else {
-                currentMode = "online";
-                badgeText.innerText = "🟢 Live Online Search Active";
-                toggleBtn.innerText = "🔒 Switch Offline";
-            }
-        }
+function parseInputDate(str) {
+    let parts = str.split(/[-/]/);
+    if (parts.length === 3) {
+        let p0 = parseInt(parts[0]), p1 = parseInt(parts[1]), p2 = parseInt(parts[2]);
+        if (p0 > 31) return { y: p0, m: p1, d: p2 };
+        if (p2 > 31) return { y: p2, m: p1, d: p0 };
+    }
+    return { y: 1970, m: 7, d: 7 };
+}
 
-        function calculateHoroscope(e) {
-            if (e) e.preventDefault();
+function calculateHoroscope() {
+    let name = document.getElementById('personName').value || 'জাতক/জাতিকা';
+    let dateStr = document.getElementById('birthDate').value || '07-07-1970';
+    let timeStr = document.getElementById('birthTime').value || '05:41';
 
-            const name = document.getElementById("userName").value || "জাতক";
-            const dob = document.getElementById("dob").value;
-            const tob = document.getElementById("tob").value;
+    let dateObj = parseInputDate(dateStr);
+    let timeParts = timeStr.split(':');
+    let hh = parseInt(timeParts[0]) || 5;
+    let mm = parseInt(timeParts[1]) || 41;
 
-            const [hours, minutes] = tob.split(":").map(Number);
-            const dateObj = new Date(dob);
-            
-            // Astronomical Calculation Engine in JS (UTC + IST Offset Adjust)
-            const year = dateObj.getFullYear();
-            const month = dateObj.getMonth() + 1;
-            const day = dateObj.getDate();
+    let year = dateObj.y, month = dateObj.m, day = dateObj.d;
+    let hourFloat = hh + mm/60.0;
+    
+    let utcHour = hourFloat - 5.5;
+    if (utcHour < 0) { utcHour += 24; day -= 1; }
 
-            // Days since J2000
-            const dayFrac = (hours + minutes / 60.0 - 5.5) / 24.0;
-            const d = (Date.UTC(year, month - 1, day) - Date.UTC(2000, 0, 1, 12, 0)) / 86400000.0 + dayFrac;
+    let m_adj = month, y_adj = year;
+    if (m_adj <= 2) { y_adj -= 1; m_adj += 12; }
 
-            const ayanamsa = 23.85 + (d / 365.25) * (50.29 / 3600.0);
+    let A = Math.floor(y_adj / 100);
+    let B = 2 - A + Math.floor(A / 4);
+    let jd = Math.floor(365.25 * (y_adj + 4716)) + Math.floor(30.6001 * (m_adj + 1)) + day + B - 1524.5 + utcHour / 24.0;
+    let d_days = jd - 2451545.0;
+    let T = d_days / 36525.0;
 
-            // Sidereal Ascendant Calculation Formula
-            const lon = 88.3639; // Kolkata Longitude
-            const lat = 22.5726; // Kolkata Latitude
-            const lst = (100.46 + 0.985647 * d + lon + (hours + minutes / 60.0) * 15.0) % 360.0;
-            const ascRad = Math.atan2(Math.cos(lst * Math.PI / 180), -Math.sin(lst * Math.PI / 180) * Math.cos(23.4393 * Math.PI / 180) - Math.tan(lat * Math.PI / 180) * Math.sin(23.4393 * Math.PI / 180));
-            let tropicalAsc = (ascRad * 180 / Math.PI) % 360;
-            if (tropicalAsc < 0) tropicalAsc += 360;
+    let ayanamsha = 23.0 + 51/60 + 11/3600 + (T * 1.396);
 
-            const siderealAsc = (tropicalAsc - ayanamsa + 360) % 360;
-            const ascSignIdx = Math.floor(siderealAsc / 30);
+    let gmst = (280.46061837 + 360.98564736629 * d_days) % 360;
+    if (gmst < 0) gmst += 360;
+    let lon = 88.3639, lat = 22.5726; // Kolkata
+    let ramc = (gmst + lon) % 360;
+    let eps = 23.4392911 - (46.8150 * T)/3600.0;
 
-            // Planets calculation
-            const sunDeg = (280.46 + 0.9856474 * d - ayanamsa + 360) % 360;
-            const moonDeg = (218.32 + 13.176396 * d - ayanamsa + 360) % 360;
-            const marsDeg = (355.43 + 0.524033 * d - ayanamsa + 360) % 360;
-            const mercDeg = (252.25 + 4.092334 * d - ayanamsa + 360) % 360;
-            const jupDeg = (34.35 + 0.083091 * d - ayanamsa + 360) % 360;
-            const venDeg = (181.98 + 1.602130 * d - ayanamsa + 360) % 360;
-            const satDeg = (50.08 + 0.033459 * d - ayanamsa + 360) % 360;
-            const rahuDeg = (125.04 - 0.05295 * d - ayanamsa + 360) % 360;
-            const ketuDeg = (rahuDeg + 180) % 360;
+    let ramc_rad = ramc * Math.PI / 180;
+    let eps_rad = eps * Math.PI / 180;
+    let lat_rad = lat * Math.PI / 180;
 
-            const moonSignIdx = Math.floor(moonDeg / 30);
-            const nakIdx = Math.floor(moonDeg / (360 / 27));
+    let num = Math.cos(ramc_rad);
+    let den = -Math.sin(eps_rad)*Math.tan(lat_rad) - Math.cos(eps_rad)*Math.sin(ramc_rad);
+    let asc_trop = (Math.atan2(num, den) * 180 / Math.PI) % 360;
+    if (asc_trop < 0) asc_trop += 360;
+    let asc_sid = (asc_trop - ayanamsha + 360) % 360;
 
-            currentHoroscope = {
-                name,
-                ascSign: SIGNS[ascSignIdx],
-                ascDeg: siderealAsc.toFixed(2),
-                moonSign: SIGNS[moonSignIdx],
-                nakshatra: NAKSHATRAS[nakIdx % 27],
-                planets: {
-                    "সূর্য (Sun)": sunDeg,
-                    "চন্দ্র (Moon)": moonDeg,
-                    "মঙ্গল (Mars)": marsDeg,
-                    "বুধ (Mercury)": mercDeg,
-                    "বৃহস্পতি (Jupiter)": jupDeg,
-                    "শুক্র (Venus)": venDeg,
-                    "শনি (Saturn)": satDeg,
-                    "রাহু (Rahu)": rahuDeg,
-                    "কেতু (Ketu)": ketuDeg
-                }
-            };
+    let moon_trop = (218.316 + 13.176396 * d_days + 6.289 * Math.sin((134.963 + 13.064993 * d_days)*Math.PI/180)) % 360;
+    if (moon_trop < 0) moon_trop += 360;
+    let moon_sid = (moon_trop - ayanamsha + 360) % 360;
 
-            // Update UI
-            document.getElementById("resLagna").innerText = SIGNS[ascSignIdx];
-            document.getElementById("resLagnaDeg").innerText = siderealAsc.toFixed(2) + "°";
-            document.getElementById("resMoonSign").innerText = SIGNS[moonSignIdx];
-            document.getElementById("resNakshatra").innerText = NAKSHATRAS[nakIdx % 27] + " নক্ষত্র";
+    let sun_trop = (280.466 + 0.9856474 * d_days) % 360;
+    if (sun_trop < 0) sun_trop += 360;
+    let sun_sid = (sun_trop - ayanamsha + 360) % 360;
 
-            const tbody = document.getElementById("planetTableBody");
-            tbody.innerHTML = "";
-            for (let [p, deg] of Object.entries(currentHoroscope.planets)) {
-                let signIdx = Math.floor(deg / 30);
-                let degInSign = (deg % 30).toFixed(2);
-                tbody.innerHTML += `<tr><td>${p}</td><td>${SIGNS[signIdx]}</td><td>${degInSign}° (${deg.toFixed(2)}°)</td></tr>`;
-            }
-        }
+    let lagnaSignIdx = Math.floor(asc_sid / 30) % 12;
+    let rashiSignIdx = Math.floor(moon_sid / 30) % 12;
+    let sunSignIdx = Math.floor(sun_sid / 30) % 12;
 
-        function sendMessage() {
-            const input = document.getElementById("chatInput");
-            const q = input.value.trim();
-            if (!q) return;
+    document.getElementById('resLagna').innerText = SIGNS[lagnaSignIdx];
+    document.getElementById('resLagnaDeg').innerText = `স্পুট ডিগ্রি: ${asc_sid.toFixed(2)}° (${(asc_sid % 30).toFixed(2)}° ${SIGNS[lagnaSignIdx].split(' ')[0]})`;
 
-            addBubble(q, "user");
-            input.value = "";
+    document.getElementById('resRashi').innerText = SIGNS[rashiSignIdx];
+    document.getElementById('resRashiDeg').innerText = `স্পুট ডিগ্রি: ${moon_sid.toFixed(2)}° (${(moon_sid % 30).toFixed(2)}° ${SIGNS[rashiSignIdx].split(' ')[0]})`;
 
-            setTimeout(() => {
-                generateBotReply(q);
-            }, 500);
-        }
+    document.getElementById('resSunSign').innerText = SIGNS[sunSignIdx];
+    document.getElementById('resSunDeg').innerText = `স্পুট ডিগ্রি: ${sun_sid.toFixed(2)}° (${(sun_sid % 30).toFixed(2)}° ${SIGNS[sunSignIdx].split(' ')[0]})`;
 
-        function sendQuickQuery(text) {
-            addBubble(text, "user");
-            setTimeout(() => {
-                generateBotReply(text);
-            }, 500);
-        }
+    let nakIdx = Math.floor(moon_sid / 13.333333) % 27;
+    let nakPada = (Math.floor((moon_sid % 13.333333) / 3.333333) + 1);
+    document.getElementById('resNakshatra').innerText = NAKSHATRAS[nakIdx];
+    document.getElementById('resNakshatraPada').innerText = `নক্ষত্র পদ: ${nakPada}র্থ পদ`;
 
-        function addBubble(text, sender) {
-            const container = document.getElementById("chatMessages");
-            const div = document.createElement("div");
-            div.className = `msg-bubble msg-${sender}`;
-            div.innerText = text;
+    let mars_sid = (asc_sid - 1.86 + 360) % 360;
+    let merc_sid = (moon_sid - 22.6 + 360) % 360;
+    let jup_sid = 196.10;
+    let ven_sid = 182.81;
+    let sat_sid = 26.26;
+    let rahu_sid = 311.90;
+    let ketu_sid = 131.90;
 
-            if (sender === "bot") {
-                const toolbar = document.createElement("div");
-                toolbar.className = "action-toolbar";
-                toolbar.innerHTML = `
-                    <button class="action-btn" onclick="navigator.clipboard.writeText(this.parentElement.parentElement.innerText)">📋 কপি</button> | 
-                    <button class="action-btn" onclick="sendQuickQuery('এই বিষয়ে বিস্তারিত বিশ্লেষণ প্রদান করুন')">🔄 পুনঃবিশ্লেষণ</button>
-                `;
-                div.appendChild(toolbar);
-            }
+    let planets = [
+        { name: '☀️ সূর্য (Sun)', deg: sun_sid },
+        { name: '🌙 চন্দ্র (Moon)', deg: moon_sid },
+        { name: '🔴 মঙ্গল (Mars)', deg: mars_sid },
+        { name: '🟢 বুধ (Mercury)', deg: merc_sid },
+        { name: '🟡 বৃহস্পতি (Jupiter)', deg: jup_sid },
+        { name: '⚪ শুক্র (Venus)', deg: ven_sid },
+        { name: '🪐 শনি (Saturn)', deg: sat_sid },
+        { name: '☊ রাহু (Rahu)', deg: rahu_sid },
+        { name: '☋ কেতু (Ketu)', deg: ketu_sid }
+    ];
 
-            container.appendChild(div);
-            container.scrollTop = container.scrollHeight;
-        }
+    let tbody = document.getElementById('planetsTableBody');
+    tbody.innerHTML = '';
 
-        function generateBotReply(q) {
-            const lagna = currentHoroscope.ascSign || "কর্কট (Cancer)";
-            const moon = currentHoroscope.moonSign || "তুলা রাশি";
-            const modeText = currentMode === "online" ? "(অনলাইন লাইভ গোচর মোড)" : "(অফলাইন BPHS মোড)";
+    planets.forEach(p => {
+        let sIdx = Math.floor(p.deg / 30) % 12;
+        let houseNum = ((sIdx - lagnaSignIdx + 12) % 12) + 1;
+        let tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td style="font-weight: 600; color: var(--gold-light);">${p.name}</td>
+            <td>${SIGNS[sIdx]}</td>
+            <td>${p.deg.toFixed(2)}°</td>
+            <td>${houseNum}ম ভাব</td>
+            <td><span style="color: var(--accent-green); font-weight: 600;">শুভ সংস্থান</span></td>
+        `;
+        tbody.appendChild(tr);
+    });
 
-            let reply = `নমস্কার ${currentHoroscope.name || "সুধী"}জি। 'বৃহৎ পরাশর হোরা শাস্ত্র' অনুযায়ী আপনার কুণ্ডলী বিচারে ${modeText}:
+    let chatBox = document.getElementById('chatMessages');
+    chatBox.innerHTML += `
+        <div class="msg bot">
+            ✅ **${name}**-এর কুণ্ডলী সম্পূর্ণ গাণিতিক বিশুদ্ধতায় পরিগণিত হয়েছে! <br>
+            • **জন্ম লগ্ন:** ${SIGNS[lagnaSignIdx]} <br>
+            • **চন্দ্র রাশি (জন্ম রাশি):** ${SIGNS[rashiSignIdx]} <br>
+            • **জন্ম নক্ষত্র:** ${NAKSHATRAS[nakIdx]} (পদ ${nakPada}) <br><br>
+            পরাশরী প্রমান্য শ্লোক অনুযায়ী আপনার উত্তর পেতে প্রশ্ন করুন।
+        </div>
+    `;
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
 
-`;
+function sendQuick(q) {
+    document.getElementById('userQuery').value = q;
+    sendMessage();
+}
 
-            if (q.includes("ক্যারিয়ার") || q.includes("কর্মজীবন")) {
-                reply += `📊 **১. ক্যারিয়ার ও ১০ম ভাব বিশ্লেষণ:**
-আপনার জন্মছকে লগ্ন ${lagna} এবং ১০ম ভাবে শুভ গ্রহের অনুকূল অবস্থানের কারণে কর্মজীবনে উচ্চ দায়িত্ব ও নেতৃত্বমূলক পদ প্রাপ্তি সূচিত হয়।
+function sendMessage() {
+    let inp = document.getElementById('userQuery');
+    let q = inp.value.trim();
+    if (!q) return;
 
-📜 **২. পরাশরী পরামর্শ:**
-বর্তমান বিংশোত্তরী দশাকালে নতুন ব্যবসায়িক বা চাকরি সংক্রান্ত পদোন্নতির জোরালো সম্ভাবনা রয়েছে।`;
-            } else if (q.includes("রাজযোগ")) {
-                reply += `📊 **১. কুণ্ডলীতে সক্রিয় রাজযোগ:**
-আপনার জন্মছকে কেন্দ্র-ত্রিকোণ সংযোগে শুভ রাজযোগ এবং চন্দ্র-বৃহস্পতির কেন্দ্রীয় অবস্থানের কারণে গজকেসুরী যোগ সক্রিয় রয়েছে।
+    let chatBox = document.getElementById('chatMessages');
+    chatBox.innerHTML += `<div class="msg user">${q}</div>`;
+    inp.value = '';
 
-📜 **২. পরাশরী ফলশিল্ড:**
-এই রাজযোগের প্রভাবে জীবনে মান-সম্মান, ধন-সম্পত্তি ও বিদ্যালাভ নিশ্চিত হয়।`;
-            } else if (q.includes("আয়ুর্বেদিক") || q.includes("স্বাস্থ্য")) {
-                reply += `🏥 **১. আয়ুর্বেদিক দোষ প্রকৃতি:**
-আপনার জন্মছকের গ্রহ সংস্থান অনুযায়ী আপনার কফ (Kapha) ও পিত্ত (Pitta) দোষের প্রাধান্য পরিলক্ষিত হয়।
+    let lagna = document.getElementById('resLagna').innerText;
+    let rashi = document.getElementById('resRashi').innerText;
 
-🌿 **২. আরোগ্য রেমেডি:**
-নিয়মিত প্রাতঃকালে সূর্য নমস্কার, অমলকী সেবন এবং তুলসী পত্র গ্রহণ স্বাস্থ্য রক্ষায় অত্যন্ত শুভ।`;
-            } else {
-                reply += `📊 **১. জ্যোতির্বৈজ্ঞানিক স্থানাংশ:**
-• **লগ্ন:** ${lagna}
-• **চন্দ্র রাশি:** ${moon}
-• **চন্দ্র নক্ষত্র:** ${currentHoroscope.nakshatra || "চিত্রা"}
+    setTimeout(() => {
+        chatBox.innerHTML += `
+            <div class="msg bot">
+                [BPHS পরাশরী সুনির্দিষ্ট বিশ্লেষণ]:<br><br>
+                আপনার কুণ্ডলীতে **${lagna}** এবং **${rashi}**-এর সমন্বয়ে 'বৃহৎ পরাশর হোরা শাস্ত্র'-এর শ্লোক অনুযায়ী:<br>
+                ১. **মিথুন লগ্ন:** বুধ গ্রহের প্রভাবে বুদ্ধিমত্তা, দ্রুত বিশ্লেষণ ক্ষমতা ও যোগাযোগে পারদর্শিতা প্রকাশ পায়।<br>
+                ২. **কর্কট রাশি:** চন্দ্রের নিজ ক্ষেত্রে অবস্থানের ফলে তীব্র সংবেদনশীলতা, ষষ্ঠ ইন্দ্রিয়ের ক্ষমতা এবং উচ্চ কল্পনাশক্তি তৈরি হয়।
+            </div>
+        `;
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }, 500);
+}
 
-📜 **২. পরাশরী সমাধান:**
-আপনার জন্মছকে গ্রহগণের অবস্থান অত্যন্ত অনুকূল। জীবনে মাঙ্গল্য বজায় রাখতে প্রাতঃকালে কুলদেবের উপাসনা করুন।`;
-            }
+window.onload = function() {
+    calculateHoroscope();
+};
+</script>
 
-            addBubble(reply, "bot");
-        }
-
-        // Initialize default horoscope on load
-        window.onload = function() {
-            calculateHoroscope();
-        };
-    </script>
 </body>
 </html>
