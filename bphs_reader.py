@@ -108,7 +108,9 @@ class BPHSDataReader:
             "prediction_bn": fallback_bn,
             "prediction_en": fallback_en,
             "description_bn": fallback_bn,
-            "description_en": fallback_en
+            "description_en": fallback_en,
+            "source_status": "fallback_not_verified",
+            "bphs_reference": None
         }
 
     def get_yoga_phala(self, yoga_key: str) -> Dict[str, Any]:
@@ -137,8 +139,10 @@ class BPHSDataReader:
             "yoga_key": yoga_key,
             "name_bn": yoga_key.replace("_", " ").title(),
             "name_en": yoga_key.replace("_", " ").title(),
-            "phala_bn": f"{yoga_key.replace('_', ' ').title()} কুণ্ডলীতে শুভ ও সম্মানিত প্রভাব আনে।",
-            "phala_en": f"{yoga_key.replace('_', ' ').title()} operates favorably in the chart."
+            "phala_bn": "এই যোগের নির্দিষ্ট ফল ডেটাবেসে যাচাইকৃতভাবে পাওয়া যায়নি।",
+            "phala_en": "No verified interpretation for this yoga is present in the loaded database.",
+            "source_status": "fallback_not_verified",
+            "bphs_reference": None
         }
 
     def get_dasha_phala(self, mahadasha: str, antardasha: str) -> Dict[str, Any]:
@@ -175,19 +179,19 @@ class BPHSDataReader:
                 "bphs_reference": "BPHS Chapters 47-58 (Vimshottari Dasha Phala)"
             }
 
-        fallback_bn = f"{m_key}-এর মহাদশায় {a_key}-এর অন্তর্দশায় গ্রহের শুভ অবস্থান অনুযায়ী উন্নতি ও সুফল ঘটে।"
         return {
             "mahadasha": m_key,
             "antardasha": a_key,
             "title_bn": f"{m_key}-এর মহাদশায় {a_key}-এর অন্তর্দশা",
             "title_en": f"{a_key} Antardasha in {m_key} Mahadasha",
-            "phala_bn": fallback_bn,
-            "phala_en": f"Results during {a_key} Antardasha in {m_key} Mahadasha according to BPHS.",
-            "description_bn": fallback_bn,
-            "description_en": f"Results during {a_key} Antardasha in {m_key} Mahadasha according to BPHS.",
+            "phala_bn": "এই নির্দিষ্ট দশা-যুগলের জন্য ডেটাবেসে যাচাইকৃত ফল পাওয়া যায়নি।",
+            "phala_en": "No verified result for this Dasha pair is present in the loaded database.",
+            "description_bn": "যাচাইকৃত ফল অনুপস্থিত; জন্মকুণ্ডলীর অধিপতি, অবস্থান ও বল আলাদাভাবে বিচার করতে হবে।",
+            "description_en": "Verified result unavailable; judge house lordship, placement and strength separately.",
             "remedy_bn": "",
             "remedy_en": "",
-            "bphs_reference": "BPHS Chapters 47-58 (Vimshottari Dasha Phala)"
+            "source_status": "not_found",
+            "bphs_reference": None
         }
 
     def get_shadbala_prediction(self, planet_name: str, shadbala_ratio: float) -> Dict[str, Any]:
@@ -460,10 +464,13 @@ class BPHSDataReader:
             predictions["yoga_predictions"].append(y_pred)
 
         # 3. Map Current Dasha
-        dasha_info = engine_output.get("dasha_at_birth", {})
-        b_maha = dasha_info.get("birth_mahadasha", "Mars")
-        d_pred = self.get_dasha_phala(b_maha, b_maha)
-        predictions["dasha_predictions"].append(d_pred)
+        current = engine_output.get("current_dasha", {}) or {}
+        if current.get("mahadasha") and current.get("antardasha"):
+            d_pred = self.get_dasha_phala(current["mahadasha"], current["antardasha"])
+            d_pred["current_pratyantardasha"] = current.get("pratyantardasha")
+            d_pred["period_start_utc"] = current.get("start_utc")
+            d_pred["period_end_utc"] = current.get("end_utc")
+            predictions["dasha_predictions"].append(d_pred)
 
         # 4. Map Vimsopaka
         vimsopaka = engine_output.get("vimsopaka_scores", {})

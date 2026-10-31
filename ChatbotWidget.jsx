@@ -1,172 +1,48 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
-/**
- * BPHS AI Chatbot Widget (React Component)
- * Provides a conversational UI grounded in Brihat Parasara Hora Sastra.
- */
-const ChatbotWidget = ({ horoscopeData }) => {
-  const [messages, setMessages] = useState([
-    {
-      sender: 'bot',
-      text: 'নমস্কার! আমি আপনার বৃহৎ পরাশর হোরা শাস্ত্র (BPHS) ভিত্তিক AI জ্যোতিষ সহকারী। আপনার কুণ্ডলী বা বর্তমান দশা নিয়ে যেকোনো প্রশ্ন জিজ্ঞেস করতে পারেন।'
-    }
-  ]);
+const ChatbotWidget = ({ horoscopeData, apiBaseUrl = '' }) => {
+  const [mode, setMode] = useState('online');
+  const [onlineConfigured, setOnlineConfigured] = useState(null);
+  const [messages, setMessages] = useState([{sender:'bot', text:'নমস্কার। Online Mode-এ AI-ভিত্তিক বিশ্লেষণ এবং Offline Mode-এ স্থানীয় গণনা ও BPHS রেফারেন্স ব্যবহার করতে পারবেন। প্রথমে জন্মকুণ্ডলী গণনা করুন।'}]);
   const [inputQuery, setInputQuery] = useState('');
   const [loading, setLoading] = useState(false);
-
-  const quickQuestions = [
-    'আমার ক্যারিয়ার ও কর্মজীবন কেমন যাবে?',
-    'আমার কুণ্ডলীতে কী কী রাজযোগ তৈরি হয়েছে?',
-    'বর্তমান বিংশোত্তরী দশায় কী প্রভাব পড়বে?',
-    'আমার ধন-সম্পত্তি ও ভাগ্যের যোগ কেমন?'
-  ];
-
-  const handleSend = async (queryText) => {
-    const textToSend = queryText || inputQuery;
-    if (!textToSend.trim()) return;
-
-    const newMessages = [...messages, { sender: 'user', text: textToSend }];
-    setMessages(newMessages);
-    if (!queryText) setInputQuery('');
-    setLoading(true);
-
-    try {
-      const response = await fetch('/api/chatbot-query', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          user_question: textToSend,
-          horoscope_data: horoscopeData || {}
-        })
-      });
-
-      const data = await response.json();
-      
-      const bhavaList = horoscopeData?.bphs_predictions?.bhava_predictions;
-      const firstPred = (Array.isArray(bhavaList) && bhavaList.length > 0)
-        ? (bhavaList[0].prediction_bn || bhavaList[0].description_bn)
-        : (bhavaList?.['1st_lord_in_10th'] || '১০ম ভাবে শুভ গ্রহের সংযোগ কর্মে বিশেষ খ্যাতি প্রদান করে।');
-
-      const yogasStr = horoscopeData?.horoscope_calculations?.yogas?.join(', ') || 'শুভ রাজযোগ সক্রিয়';
-
-      const botReplyText = data?.bot_response || `[বিপিএইচএস সূত্র ভিত্তিক বিশ্লেষণ]\n\nআপনার কুণ্ডলীতে লগ্ন ও গ্রহের অবস্থান অনুযায়ী BPHS অধ্যায় থেকে দেখা যাচ্ছে:\n১. ${firstPred}\n২. কুণ্ডলীতে সক্রিয় যোগ: ${yogasStr}`;
-
-      setTimeout(() => {
-        setMessages((prev) => [
-          ...prev,
-          {
-            sender: 'bot',
-            text: botReplyText
-          }
-        ]);
-        setLoading(false);
-      }, 600);
-
-    } catch (error) {
-      setMessages((prev) => [
-        ...prev,
-        { sender: 'bot', text: 'ক্ষমা করবেন, চ্যাটবট সংযোগে সাময়িক সমস্যা হয়েছে। ব্যাকএন্ড সার্ভার চালু আছে কি না পরীক্ষা করুন।' }
-      ]);
-      setLoading(false);
+  const endRef = useRef(null);
+  useEffect(() => { endRef.current?.scrollIntoView({behavior:'smooth'}); }, [messages, loading]);
+  useEffect(() => { fetch(`${apiBaseUrl}/api/chatbot-status`).then(r=>r.json()).then(d=>setOnlineConfigured(!!d.online_configured)).catch(()=>setOnlineConfigured(false)); }, [apiBaseUrl]);
+  const quickQuestions = ['আমার অর্থভাগ্য কবে উন্নতি হতে পারে?','চলমান মহাদশা ও অন্তর্দশার ফল ব্যাখ্যা করুন','চাকরি ও কর্মজীবনের সম্ভাবনা বিচার করুন','বর্তমান গোচর জন্মকুণ্ডলীর কোন গ্রহকে প্রভাবিত করছে?'];
+  const handleSend = async (query) => {
+    const question = (query ?? inputQuery).trim();
+    if (!question || loading) return;
+    if (!horoscopeData?.horoscope_calculations?.planets) {
+      setMessages(prev => [...prev,{sender:'bot',text:'প্রথমে জন্মতারিখ, জন্মসময় ও জন্মস্থান দিয়ে প্রকৃত জন্মকুণ্ডলী গণনা সম্পন্ন করুন।'}]); return;
     }
+    if (mode === 'online' && onlineConfigured === false) {
+      setMessages(prev => [...prev,{sender:'bot',text:'Online AI বর্তমানে সংযুক্ত নয়। Backend-এ OPENAI_API_KEY সেট করুন, অথবা উপরের সুইচ থেকে Offline Mode নির্বাচন করুন।'}]); return;
+    }
+    const history = messages.slice(-16).map(m => ({role:m.sender==='user'?'user':'assistant',content:m.text}));
+    setMessages(prev => [...prev,{sender:'user',text:question}]); setInputQuery(''); setLoading(true);
+    try {
+      const res = await fetch(`${apiBaseUrl}/api/chatbot-query`, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user_question:question,horoscope_data:horoscopeData,conversation_history:history,mode})});
+      const data = await res.json(); if (!res.ok) throw new Error(data.detail || `HTTP ${res.status}`);
+      if (!data.bot_response) throw new Error('খালি উত্তর পাওয়া গেছে।');
+      setMessages(prev => [...prev,{sender:'bot',text:data.bot_response,mode:data.mode}]);
+    } catch (e) { setMessages(prev => [...prev,{sender:'bot',text:`${mode==='online'?'Online AI':'Offline Engine'}-এ সমস্যা: ${e.message}`}]); }
+    finally { setLoading(false); }
   };
-
-  return (
-    <div style={{ background: '#FFFFFF', borderRadius: '16px', boxShadow: '0 8px 24px rgba(0,0,0,0.1)', overflow: 'hidden', border: '1px solid #EAECEE', maxWidth: '800px', margin: '20px auto' }}>
-      {/* Chat Header */}
-      <div style={{ background: 'linear-gradient(135deg, #4A154B 0%, #2C3E50 100%)', padding: '16px 20px', color: '#FFFFFF', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <div>
-          <h3 style={{ margin: 0, fontSize: '1.25rem', fontFamily: 'Georgia, serif' }}>BPHS AI জ্যোতিষ চ্যাটবট</h3>
-          <p style={{ margin: '4px 0 0 0', fontSize: '0.85rem', opacity: 0.85 }}>বৃহৎ পরাশর হোরা শাস্ত্রের শ্লোক অনুযায়ী সরাসরি উত্তর</p>
-        </div>
-        <span style={{ background: '#27AE60', padding: '4px 10px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: 'bold' }}>সক্রিয় (Active)</span>
+  const switchMode = (next) => { if (loading) return; setMode(next); setMessages(prev=>[...prev,{sender:'bot',text:next==='online'?'ONLINE MODE চালু হয়েছে। উত্তর তৈরিতে Backend AI ব্যবহার হবে।':'OFFLINE MODE চালু হয়েছে। কোনো OpenAI API বা ইন্টারনেট কল হবে না; শুধু স্থানীয় গণনা ও সংরক্ষিত রেফারেন্স ব্যবহার হবে।'}]); };
+  return <section style={{background:'#fff',border:'1px solid #e2e8f0',borderRadius:18,boxShadow:'0 12px 32px rgba(15,23,42,.10)',maxWidth:960,margin:'20px auto',overflow:'hidden',color:'#172033'}}>
+    <header style={{background:'linear-gradient(120deg,#10213d,#243f69)',color:'#fff',padding:'20px 22px'}}><h2 style={{margin:0,fontSize:21}}>ASTROLOGER GOUOTAM — AI Astrology Assistant</h2><p style={{margin:'6px 0 0',opacity:.85,fontSize:13}}>BPHS • D1 / D9 • Vimshottari Dasha • Transit-to-Natal</p></header>
+    <div style={{padding:'14px 18px',background:'#f8fafc',borderBottom:'1px solid #e5eaf1'}}>
+      <div style={{fontSize:12,fontWeight:800,letterSpacing:'.08em',color:'#64748b',marginBottom:9}}>SELECT CHATBOT MODE</div>
+      <div role="group" aria-label="Chatbot mode" style={{display:'flex',gap:8,flexWrap:'wrap'}}>
+        <button onClick={()=>switchMode('online')} aria-pressed={mode==='online'} style={{flex:1,minWidth:130,padding:'11px 14px',borderRadius:12,border:mode==='online'?'2px solid #16845b':'1px solid #cbd5e1',background:mode==='online'?'#e8f7ef':'#fff',color:'#14543b',fontWeight:800,cursor:'pointer'}}>● ONLINE MODE</button>
+        <button onClick={()=>switchMode('offline')} aria-pressed={mode==='offline'} style={{flex:1,minWidth:130,padding:'11px 14px',borderRadius:12,border:mode==='offline'?'2px solid #2563eb':'1px solid #cbd5e1',background:mode==='offline'?'#eaf2ff':'#fff',color:'#1e40af',fontWeight:800,cursor:'pointer'}}>● OFFLINE MODE</button>
       </div>
-
-      {/* Suggestion Chips */}
-      <div style={{ padding: '12px 16px', background: '#F8F9F9', borderBottom: '1px solid #EAECEE', display: 'flex', gap: '8px', overflowX: 'auto' }}>
-        {quickQuestions.map((q, idx) => (
-          <button
-            key={idx}
-            onClick={() => handleSend(q)}
-            style={{
-              whiteSpace: 'nowrap',
-              background: '#FFFFFF',
-              border: '1px solid #D5D8DC',
-              borderRadius: '16px',
-              padding: '6px 14px',
-              fontSize: '0.82rem',
-              color: '#2C3E50',
-              cursor: 'pointer',
-              transition: 'all 0.2s'
-            }}
-          >
-            💡 {q}
-          </button>
-        ))}
-      </div>
-
-      {/* Messages Scroll Area */}
-      <div style={{ height: '320px', padding: '16px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '12px', background: '#FAFAFA' }}>
-        {messages.map((msg, index) => (
-          <div
-            key={index}
-            style={{
-              alignSelf: msg.sender === 'user' ? 'flex-end' : 'flex-start',
-              maxWidth: '80%',
-              background: msg.sender === 'user' ? '#2C3E50' : '#FFFFFF',
-              color: msg.sender === 'user' ? '#FFFFFF' : '#1A1A1A',
-              padding: '12px 16px',
-              borderRadius: msg.sender === 'user' ? '16px 16px 0 16px' : '16px 16px 16px 0',
-              boxShadow: '0 2px 6px rgba(0,0,0,0.05)',
-              border: msg.sender === 'bot' ? '1px solid #EAECEE' : 'none',
-              fontSize: '0.95rem',
-              lineHeight: '1.5'
-            }}
-          >
-            {msg.text}
-          </div>
-        ))}
-        {loading && (
-          <div style={{ alignSelf: 'flex-start', background: '#FFFFFF', padding: '10px 16px', borderRadius: '16px', border: '1px solid #EAECEE', color: '#7F8C8D', fontSize: '0.9rem' }}>
-            ⏳ পরাশর সংহিতা থেকে উত্তর খোঁজা হচ্ছে...
-          </div>
-        )}
-      </div>
-
-      {/* Input Box */}
-      <div style={{ padding: '12px 16px', background: '#FFFFFF', borderTop: '1px solid #EAECEE', display: 'flex', gap: '10px' }}>
-        <input
-          type="text"
-          value={inputQuery}
-          onChange={(e) => setInputQuery(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-          placeholder="আপনার প্রশ্নটি লিখুন (যেমন: আমার বর্তমান গ্রহ অবস্থান কেমন?)..."
-          style={{
-            flex: 1,
-            padding: '10px 16px',
-            borderRadius: '24px',
-            border: '1px solid #D5D8DC',
-            outline: 'none',
-            fontSize: '0.95rem'
-          }}
-        />
-        <button
-          onClick={() => handleSend()}
-          style={{
-            background: '#8B0000',
-            color: '#FFFFFF',
-            border: 'none',
-            borderRadius: '24px',
-            padding: '10px 22px',
-            fontWeight: '600',
-            cursor: 'pointer'
-          }}
-        >
-          পাঠান
-        </button>
-      </div>
+      <div style={{fontSize:12,color:'#475569',marginTop:9,lineHeight:1.55}}>{mode==='online'?'AI-ভিত্তিক বিস্তারিত উত্তর। ইন্টারনেট, Backend এবং API Key প্রয়োজন।': 'ইন্টারনেট/API প্রয়োজন নেই। স্থানীয় জন্মকুণ্ডলী, দশা, গোচর ডেটা ও BPHS রেফারেন্স থেকে সীমাবদ্ধ কিন্তু যাচাইযোগ্য উত্তর।'} {onlineConfigured===false && mode==='online' ? <b style={{color:'#b45309'}}> Online API Key পাওয়া যায়নি।</b> : null}</div>
     </div>
-  );
+    <div style={{display:'flex',gap:8,padding:12,overflowX:'auto',background:'#fff'}}>{quickQuestions.map(q=><button key={q} disabled={loading} onClick={()=>handleSend(q)} style={{whiteSpace:'nowrap',border:'1px solid #cbd5e1',borderRadius:18,padding:'8px 12px',background:'#f8fafc',cursor:'pointer',fontSize:12}}>{q}</button>)}</div>
+    <div style={{height:440,maxHeight:'58vh',minHeight:280,overflowY:'auto',padding:16,background:'#f5f7fb'}}>{messages.map((m,i)=><div key={i} style={{whiteSpace:'pre-wrap',overflowWrap:'anywhere',lineHeight:1.75,maxWidth:'94%',margin:'10px 0 10px '+(m.sender==='user'?'auto':'0'),padding:14,borderRadius:14,background:m.sender==='user'?'#e1edff':'#fff',border:'1px solid #e2e8f0',boxShadow:'0 2px 6px rgba(15,23,42,.04)'}}>{m.sender==='bot'&&m.mode&&<div style={{fontSize:10,fontWeight:800,color:m.mode==='offline'?'#1d4ed8':'#047857',marginBottom:5}}>{m.mode.toUpperCase()} RESPONSE</div>}{m.text}</div>)}{loading&&<div style={{padding:12,color:'#475569'}}> {mode==='online'?'AI আপনার প্রশ্ন ও কুণ্ডলী বিশ্লেষণ করছে…':'স্থানীয় জ্যোতিষ ডেটা সাজানো হচ্ছে…'}</div>}<div ref={endRef}/></div>
+    <form onSubmit={e=>{e.preventDefault();handleSend();}} style={{display:'flex',gap:9,padding:14,borderTop:'1px solid #e5eaf1',background:'#fff'}}><input value={inputQuery} onChange={e=>setInputQuery(e.target.value)} placeholder="আপনার প্রশ্ন লিখুন…" aria-label="আপনার প্রশ্ন" style={{flex:1,minWidth:0,padding:'13px 15px',border:'1px solid #cbd5e1',borderRadius:24,fontSize:14}}/><button disabled={loading} style={{padding:'0 22px',border:0,borderRadius:24,background:'#17345c',color:'#fff',fontWeight:700,cursor:'pointer'}}>পাঠান</button></form>
+  </section>;
 };
-
 export default ChatbotWidget;

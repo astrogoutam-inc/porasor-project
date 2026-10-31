@@ -1,9 +1,19 @@
 {
-  "name": "astrologer-gouotam-ai-suite",
+  "name": "astrologer-gouotam-ai",
   "version": "1.0.0",
-  "description": "BPHS AI Vedic Astrology Suite with D1 & D9 Visual Kundali Charts",
+  "description": "BPHS AI Vedic & Ayurvedic Astrology Software Suite",
   "main": "index.html",
   "scripts": {
-    "start": "serve ."
-  }
+    "start": "serve .",
+    "api": "uvicorn fastapi_app:app --host 0.0.0.0 --port 8000"
+  },
+  "keywords": [
+    "astrology",
+    "vedic",
+    "bphs",
+    "kuntali",
+    "ayurveda"
+  ],
+  "author": "Gouotam Mukherjee",
+  "license": "MIT"
 }

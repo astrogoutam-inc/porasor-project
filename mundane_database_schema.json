@@ -1,1 +1,6 @@
-{"mundane_version": "1.0"}
+{
+  "mundane_principles": [
+    {"event": "Eclipses", "effect": "Political and social shifts within 6 months"},
+    {"event": "Saturn-Jupiter Conjunction", "effect": "Economic and structural epochal changes"}
+  ]
+}

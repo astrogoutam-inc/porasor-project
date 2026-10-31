@@ -1,0 +1,8 @@
+ASTROLOGER GOUOTAM — CHATBOT MODE GUIDE
+
+১) ONLINE MODE: OPENAI_API_KEY backend environment variable-এ সেট করুন। Frontend-এ কখনো API key রাখবেন না।
+২) OFFLINE MODE: OpenAI API call করে না। Local chart data + local BPHS book/database থেকে নির্দিষ্ট structured report তৈরি করে।
+৩) দুই mode-ই ব্যবহার করতে FastAPI server চালু থাকতে হবে; GitHub Pages নিজে Python backend চালায় না।
+৪) Frontend আলাদা domain-এ হলে window.BPHS_API_BASE_URL বা React apiBaseUrl-এ deployed FastAPI URL দিন এবং FRONTEND_ORIGINS-এ frontend origin যোগ করুন।
+৫) /api/chatbot-status দিয়ে Online API key availability দেখুন।
+৬) Offline Mode-এ API key না থাকলেও chat request local engine-এ যাবে, তবে horoscope_data-এ real calculation থাকতে হবে।
